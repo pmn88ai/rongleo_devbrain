@@ -245,6 +245,17 @@ a{text-decoration:none;color:inherit}
 /* NOTE FILTER TODOS */
 .tf-todo-badge{background:var(--accent);color:#fff;font-size:.58rem;padding:1px 5px;border-radius:10px;margin-left:3px;font-weight:700}
 
+/* COLLAPSIBLE PANELS */
+.collapse-toggle{display:inline-flex;align-items:center;gap:4px;font-size:.7rem;font-weight:600;color:var(--text3);cursor:pointer;padding:3px 6px;background:none;border:none;transition:color .13s;border-radius:4px}
+.collapse-toggle:hover{color:var(--text2);background:var(--bg2)}
+.collapse-arrow{font-style:normal;transition:transform .15s}
+
+/* INFO TRUNCATE */
+.info-clamp{overflow:hidden;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical}
+.info-clamp.expanded{display:block}
+.info-more-btn{font-size:.71rem;color:var(--accent);background:none;border:none;cursor:pointer;padding:3px 0 0;font-weight:600;display:block}
+.info-more-btn:hover{text-decoration:underline}
+
 </style>
 </head>
 <body>
@@ -661,6 +672,12 @@ function renderDash(){rStats();rSide();renderGrid();}
 
 // PROJECT DETAIL
 function openProj(id){S.cpid=id;S.npages[id]=1;document.getElementById('dvmain').classList.add('hidden');document.getElementById('dview').classList.add('active');document.getElementById('htitle').textContent='';renderDet(id);}
+
+// Collapse state per project: {pid: {links:bool, imps:bool, info:bool}}
+const PCOL={};
+function togCol(pid,key){if(!PCOL[pid])PCOL[pid]={};PCOL[pid][key]=!PCOL[pid][key];renderDet(pid);}
+function isOpen(pid,key,def=true){return PCOL[pid]??(PCOL[pid]={});return PCOL[pid][key]===undefined?def:PCOL[pid][key];}
+
 function renderDet(id){
   const p=S.projects.find(x=>x.id===id);if(!p)return;
   const aN=NI[id]||[];
@@ -669,6 +686,18 @@ function renderDet(id){
   const pp=pct(p),chk=p.checklist||Array(CHKS.length).fill(false);
   const zom=isZom(p),snz=isSnz(p);
   const ln=aN[0];const pchk=CHKS.filter((_,i)=>!chk[i]);const tImps=imps.filter(i=>i.status==='todo');const obug=aN.filter(n=>n.type==='bug'&&!n.resolved);
+
+  // Collapse state (default open)
+  if(!PCOL[id])PCOL[id]={};
+  const lOpen=PCOL[id].links!==false;
+  const iOpen=PCOL[id].imps!==false;
+  const inOpen=PCOL[id].info!==false;
+
+  // Info content helpers
+  const infoFull=(p.useCase||p.keywords);
+  const infoLines=((p.useCase||'').match(/\n/g)||[]).length+(p.keywords?1:0);
+  const infoLong=infoLines>3||(p.useCase||'').length>180;
+
   document.getElementById('dcont').innerHTML=`
   <div class="dhead">
     <div>
@@ -697,6 +726,8 @@ function renderDet(id){
         ${obug.length?`<div class="ri"><span class="ric">🐛</span><div class="rib"><div class="ril">Bug open (${obug.length})</div><div class="rit">${obug[0].content.substring(0,80)}</div></div></div>`:''}
         ${(zom||snz)?`<div class="ract"><button class="btn bsm bgr" onclick="contProj('${id}')">▶ Continue</button><button class="btn bsm byl" onclick="snzProj('${id}')">💤 Snooze 7d</button><button class="btn bsm bs" onclick="askDropProj('${id}')">✕ Drop</button></div>`:''}
       </div>`:''}
+
+      <!-- DEV LOG -->
       <div class="panel">
         <div class="ph"><div class="pt">📝 Dev Log <span style="font-size:.68rem;font-weight:400;color:var(--text3)">(${aN.length})</span></div><button class="btn bs bsm" onclick="oNoteMo('${id}')">+ Note</button></div>
         <div class="pb2">
@@ -711,18 +742,59 @@ function renderDet(id){
           <div class="tl" id="nlist">${rNotes(aN,id)}</div>
         </div>
       </div>
-      <div class="panel">
-        <div class="ph"><div class="pt">🚀 Backlog</div><button class="btn bs bsm" onclick="oImpMo('${id}')">+ Add</button></div>
-        <div class="pb2">${!imps.length?`<div class="empt" style="padding:18px"><div style="font-size:.78rem">Chưa có improvement</div></div>`:
-        `<div class="il">${imps.map(i=>`<div class="ii ${i.priority==='high'?'ph':i.priority==='medium'?'pm':'pl'}">
-          <div class="pdot ${i.priority==='high'?'pdh':i.priority==='medium'?'pdm':'pdl'}"></div>
-          <div class="ic">${i.content}</div>
-          <select class="isel" onchange="updIS('${i.id}','${id}',this.value)"><option value="todo" ${i.status==='todo'?'selected':''}>todo</option><option value="doing" ${i.status==='doing'?'selected':''}>doing</option><option value="done" ${i.status==='done'?'selected':''}>done</option></select>
-          <button class="dbtn" onclick="askDelImp('${i.id}','${id}')">✕</button>
-        </div>`).join('')}</div>`}</div>
-      </div>
     </div>
+
+    <!-- SIDEBAR -->
     <div class="dside">
+
+      <!-- LINKS — collapsible, no edit -->
+      <div class="panel">
+        <div class="ph">
+          <div class="pt">🔗 Links <span style="font-size:.68rem;font-weight:400;color:var(--text3)">(${links.length})</span></div>
+          <div style="display:flex;align-items:center;gap:6px">
+            <button class="btn bs bsm" onclick="oLinkMo('${id}')">+ Add</button>
+            <button class="collapse-toggle ${lOpen?'open':''}" onclick="PCOL['${id}'].links=${lOpen?'false':'true'};renderDet('${id}')">
+              <i class="collapse-arrow">${lOpen?'▲':'▼'}</i>
+            </button>
+          </div>
+        </div>
+        ${lOpen?`<div class="pb2">${!links.length
+          ?`<div style="text-align:center;padding:10px;color:var(--text3);font-size:.77rem">Chưa có link</div>`
+          :`<div class="ll">${links.map(l=>`<div class="li">
+              <span class="llbl">${l.label}</span>
+              <a href="${l.url}" target="_blank" rel="noopener" class="lurl">${l.url}</a>
+              <button class="dbtn" onclick="askDelLnk('${l.id}','${id}')">✕</button>
+            </div>`).join('')}</div>`
+        }</div>`:''}
+      </div>
+
+      <!-- BACKLOG — collapsible, no edit, status dropdown only -->
+      <div class="panel">
+        <div class="ph">
+          <div class="pt">🚀 Backlog <span style="font-size:.68rem;font-weight:400;color:var(--text3)">(${imps.length})</span></div>
+          <div style="display:flex;align-items:center;gap:6px">
+            <button class="btn bs bsm" onclick="oImpMo('${id}')">+ Add</button>
+            <button class="collapse-toggle ${iOpen?'open':''}" onclick="PCOL['${id}'].imps=${iOpen?'false':'true'};renderDet('${id}')">
+              <i class="collapse-arrow">${iOpen?'▲':'▼'}</i>
+            </button>
+          </div>
+        </div>
+        ${iOpen?`<div class="pb2">${!imps.length
+          ?`<div class="empt" style="padding:14px"><div style="font-size:.78rem">Chưa có improvement</div></div>`
+          :`<div class="il">${imps.map(i=>`<div class="ii ${i.priority==='high'?'ph':i.priority==='medium'?'pm':'pl'}">
+              <div class="pdot ${i.priority==='high'?'pdh':i.priority==='medium'?'pdm':'pdl'}"></div>
+              <div class="ic">${i.content}</div>
+              <select class="isel" onchange="updIS('${i.id}','${id}',this.value)">
+                <option value="todo" ${i.status==='todo'?'selected':''}>todo</option>
+                <option value="doing" ${i.status==='doing'?'selected':''}>doing</option>
+                <option value="done" ${i.status==='done'?'selected':''}>done</option>
+              </select>
+              <button class="dbtn" onclick="askDelImp('${i.id}','${id}')">✕</button>
+            </div>`).join('')}</div>`
+        }</div>`:''}
+      </div>
+
+      <!-- PROGRESS -->
       <div class="panel">
         <div class="ph"><div class="pt">📊 Progress</div></div>
         <div class="pb2">
@@ -731,20 +803,33 @@ function renderDet(id){
           <div class="chklist">${CHKS.map((item,i)=>`<div class="chi ${chk[i]?'chkd':''}"><input type="checkbox" id="c${id}${i}" ${chk[i]?'checked':''} onchange="togChk('${id}',${i})"><label for="c${id}${i}">${item}</label></div>`).join('')}</div>
         </div>
       </div>
+
+      <!-- INFO — collapsible, long text truncated -->
       <div class="panel">
-        <div class="ph"><div class="pt">ℹ️ Info</div></div>
-        <div class="pb2">
-          ${p.useCase?`<div style="margin-bottom:11px"><div style="font-size:.69rem;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px">USE CASE</div><div style="font-size:.79rem;color:var(--text2);line-height:1.5;white-space:pre-line">${p.useCase}</div></div>`:''}
-          ${p.keywords?`<div style="margin-bottom:11px"><div style="font-size:.69rem;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px">KEYWORDS</div><div style="font-size:.75rem;color:var(--text3);font-family:'DM Mono',monospace">${p.keywords}</div></div>`:''}
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:.72rem"><div><span style="color:var(--text3)">Created</span><br><span style="font-family:'DM Mono',monospace;font-size:.69rem">${fmtD(p.createdAt)}</span></div><div><span style="color:var(--text3)">Updated</span><br><span style="font-family:'DM Mono',monospace;font-size:.69rem">${fmtD(p.updatedAt)}</span></div></div>
+        <div class="ph">
+          <div class="pt">ℹ️ Info</div>
+          ${infoFull?`<button class="collapse-toggle ${inOpen?'open':''}" onclick="PCOL['${id}'].info=${inOpen?'false':'true'};renderDet('${id}')">
+            <i class="collapse-arrow">${inOpen?'▲':'▼'}</i>
+          </button>`:''}
         </div>
+        ${(!infoFull||inOpen)?`<div class="pb2">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:.72rem;margin-bottom:${infoFull?'10px':'0'}">
+            <div><span style="color:var(--text3)">Created</span><br><span style="font-family:'DM Mono',monospace;font-size:.69rem">${fmtD(p.createdAt)}</span></div>
+            <div><span style="color:var(--text3)">Updated</span><br><span style="font-family:'DM Mono',monospace;font-size:.69rem">${fmtD(p.updatedAt)}</span></div>
+          </div>
+          ${p.useCase?`<div style="margin-bottom:9px">
+            <div style="font-size:.69rem;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px">USE CASE</div>
+            <div id="uc-${id}" class="info-clamp${infoLong?'':' expanded'}" style="font-size:.79rem;color:var(--text2);line-height:1.5;white-space:pre-line">${p.useCase}</div>
+            ${infoLong?`<button class="info-more-btn" onclick="this.previousElementSibling.classList.toggle('expanded');this.textContent=this.previousElementSibling.classList.contains('expanded')?'Thu gọn ▲':'Xem thêm ▼'">Xem thêm ▼</button>`:''}
+          </div>`:''}
+          ${p.keywords?`<div>
+            <div style="font-size:.69rem;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px">KEYWORDS</div>
+            <div style="font-size:.75rem;color:var(--text3);font-family:'DM Mono',monospace">${p.keywords}</div>
+          </div>`:''}
+        </div>`:
+        `<div style="padding:10px 15px;font-size:.75rem;color:var(--text3)">${fmtD(p.createdAt)} · ${fmtD(p.updatedAt)}</div>`}
       </div>
-      <div class="panel">
-        <div class="ph"><div class="pt">🔗 Links</div><button class="btn bs bsm" onclick="oLinkMo('${id}')">+ Add</button></div>
-        <div class="pb2">${!links.length?`<div style="text-align:center;padding:12px;color:var(--text3);font-size:.77rem">Chưa có link</div>`:
-        `<div class="ll">${links.map(l=>`<div class="li"><span class="llbl">${l.label}</span><a href="${l.url}" target="_blank" rel="noopener" class="lurl">${l.url}</a><button class="dbtn" onclick="askDelLnk('${l.id}','${id}')">✕</button></div>`).join('')}</div>`}
-        </div>
-      </div>
+
     </div>
   </div>`;
 }
