@@ -404,6 +404,7 @@ a{text-decoration:none;color:inherit}
   </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script>
 const STATUSES=[{id:'s1',name:'idea',color:'#6b3fa0'},{id:'s2',name:'spec',color:'#1a5fa8'},{id:'s3',name:'building',color:'#c8440a'},{id:'s4',name:'testing',color:'#b07000'},{id:'s5',name:'done',color:'#2d7a4f'},{id:'s6',name:'improving',color:'#1a5fa8'},{id:'s7',name:'dropped',color:'#9a9088'}];
 const CHKS=['Có spec / tài liệu','Có UI prototype','Backend hoạt động','Deploy lên server','Test cơ bản xong'];
@@ -412,10 +413,10 @@ const NP=20;
 let S={projects:[],notes:[],improvements:[],links:[],tags:[...DTAGS],statuses:[...STATUSES],view:'grid',fst:'all',ftag:null,search:'',nf:'all',cpid:null,npages:{}};
 let NI={};
 const uid=()=>'x'+Math.random().toString(36).substr(2,9);
-function save(){try{localStorage.setItem('dbv3',JSON.stringify(S));}catch(e){}}
-function load(){try{const d=localStorage.getItem('dbv3');if(d){const p=JSON.parse(d);S={...S,...p};if(!S.statuses?.length)S.statuses=[...STATUSES];}}catch(e){}}
+function save(){}
+function load(){}
 function bIdx(){NI={};S.notes.forEach(n=>{if(!NI[n.projectId])NI[n.projectId]=[];NI[n.projectId].push(n);});Object.values(NI).forEach(a=>a.sort((a,b)=>b.createdAt-a.createdAt));}
-function seed(){
+function seed(){return;
   if(S.projects.length>0)return;
   const now=Date.now(),day=864e5;
   S.projects=[
@@ -685,35 +686,31 @@ function noteHTML(n,pid){
 function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 function lmNotes(pid){S.npages[pid]=(S.npages[pid]||1)+1;document.getElementById('nlist').innerHTML=rNotes(NI[pid]||[],pid);}
 function setNF(f,pid){S.nf=f;S.npages[pid]=1;document.getElementById('nlist').innerHTML=rNotes(NI[pid]||[],pid);document.querySelectorAll('.tf').forEach(b=>b.classList.remove('active'));event.target.classList.add('active');}
-function togRes(nid,pid){const n=S.notes.find(x=>x.id===nid);if(!n)return;n.resolved=!n.resolved;bIdx();save();renderDet(pid);toast(n.resolved?'🐛 Bug fixed!':'↩ Bug reopened');}
+
 
 // CHECKLIST — always touch updatedAt
-function togChk(pid,idx){const p=S.projects.find(x=>x.id===pid);if(!p.checklist)p.checklist=Array(CHKS.length).fill(false);p.checklist[idx]=!p.checklist[idx];p.updatedAt=Date.now();save();renderDet(pid);}
+
 
 // ZOMBIE ACTIONS — updatedAt rules
-function contProj(pid){const p=S.projects.find(x=>x.id===pid);if(!p)return;p.status='building';p.updatedAt=Date.now();p.snoozedUntil=0;bIdx();save();renderDet(pid);rSide();toast('▶ Active!');}
-function snzProj(pid){
-  // Snooze: snoozedUntil set FORWARD, updatedAt NOT changed — user is intentionally pausing, not working
-  const p=S.projects.find(x=>x.id===pid);if(!p)return;p.snoozedUntil=Date.now()+7*864e5;
-  save();renderDet(pid);toast('💤 Snooze 7d (updatedAt không đổi — phân biệt snooze vs bỏ bê)');
-}
-function dropProj(pid){const p=S.projects.find(x=>x.id===pid);if(!p)return;p.status='dropped';p.updatedAt=Date.now();bIdx();save();renderDet(pid);rSide();toast('Project đã drop');}
+
+
+
 function askDropProj(pid){cfm('Mark Dropped?','Project sẽ chuyển sang dropped.','📦','Drop',()=>dropProj(pid));}
 
 // DELETE WITH CONFIRM + UNDO
-function askDelN(nid,pid){const snap=S.notes.find(x=>x.id===nid);cfm('Xoá note?','','🗑','Xoá',()=>{S.notes=S.notes.filter(n=>n.id!==nid);bIdx();save();renderDet(pid);pushU('note',()=>{S.notes.push(snap);bIdx();save();renderDet(pid);});toast('🗑 Đã xoá note',true);});}
-function askDelImp(iid,pid){const snap=S.improvements.find(x=>x.id===iid);cfm('Xoá improvement?','','🗑','Xoá',()=>{S.improvements=S.improvements.filter(i=>i.id!==iid);save();renderDet(pid);pushU('imp',()=>{S.improvements.push(snap);save();renderDet(pid);});toast('🗑 Đã xoá',true);});}
-function askDelLnk(lid,pid){const snap=S.links.find(x=>x.id===lid);cfm('Xoá link?','','🗑','Xoá',()=>{S.links=S.links.filter(l=>l.id!==lid);save();renderDet(pid);pushU('link',()=>{S.links.push(snap);save();renderDet(pid);});toast('🗑 Đã xoá link',true);});}
-function askDelProj(pid){const p=S.projects.find(x=>x.id===pid);cfm(`Xoá "${p?.name}"?`,'Notes, links, improvements sẽ mất hết. Không undo được.','⚠️','Xoá Project',()=>{S.projects=S.projects.filter(p=>p.id!==pid);S.notes=S.notes.filter(n=>n.projectId!==pid);S.improvements=S.improvements.filter(i=>i.projectId!==pid);S.links=S.links.filter(l=>l.projectId!==pid);bIdx();save();showDash();toast('🗑 Project đã xoá');});}
+
+
+
+
 
 // IMPROVEMENT
 function oImpMo(pid){document.getElementById('eipid').value=pid;document.getElementById('eicont').value='';document.getElementById('eipr').value='medium';document.getElementById('eist').value='todo';oMo('m-imp');setTimeout(()=>document.getElementById('eicont').focus(),100);}
-function saveImp(){const c=document.getElementById('eicont').value.trim();if(!c)return;const pid=document.getElementById('eipid').value;S.improvements.push({id:uid(),projectId:pid,content:c,priority:document.getElementById('eipr').value,status:document.getElementById('eist').value});save();cMo('m-imp');if(S.cpid===pid)renderDet(pid);}
-function updIS(iid,pid,st){const i=S.improvements.find(x=>x.id===iid);if(i){i.status=st;save();}}
+
+
 
 // LINKS
 function oLinkMo(pid){document.getElementById('elpid').value=pid;document.getElementById('ellbl').value='';document.getElementById('elurl').value='';oMo('m-link');}
-function saveLink(){const url=document.getElementById('elurl').value.trim();if(!url)return;const pid=document.getElementById('elpid').value;S.links.push({id:uid(),projectId:pid,label:document.getElementById('ellbl').value.trim()||'link',url});save();cMo('m-link');if(S.cpid===pid)renderDet(pid);}
+
 
 // NOTE MODAL
 function oNoteMo(pid){
@@ -737,33 +734,8 @@ function editNoteMo(nid,pid){
   document.getElementById('note-save-btn').textContent='Lưu';
   oMo('m-note');setTimeout(()=>document.getElementById('encont').focus(),100);
 }
-function saveNote(){
-  const c=document.getElementById('encont').value.trim();if(!c)return;
-  const pid=document.getElementById('enpid').value;
-  const nid=document.getElementById('ennid').value;
-  const type=document.getElementById('entype').value;
-  const isTodo=document.getElementById('entodo').checked;
-  if(nid){
-    // EDIT MODE
-    const n=S.notes.find(x=>x.id===nid);
-    if(n){n.content=c;n.type=type;n.isTodo=isTodo;n.updatedAt=Date.now();}
-    bIdx();save();cMo('m-note');if(S.cpid===pid)renderDet(pid);
-    toast('✅ Note đã cập nhật!');
-  } else {
-    // CREATE MODE
-    S.notes.unshift({id:uid(),projectId:pid,content:c,type,isTodo,isDone:false,resolved:false,createdAt:Date.now()});
-    touchP(pid);
-    bIdx();save();cMo('m-note');
-    if(S.cpid===pid)renderDet(pid);if(!S.cpid)renderGrid();
-    toast('📝 Note đã thêm!');
-  }
-}
-function togTodo(nid,pid){
-  const n=S.notes.find(x=>x.id===nid);if(!n)return;
-  n.isDone=!n.isDone;n.updatedAt=Date.now();
-  bIdx();save();renderDet(pid);
-  toast(n.isDone?'☑ Done!':'☐ Reopened');
-}
+
+
 
 // PROJECT MODAL
 function oProjMo(){
@@ -781,16 +753,7 @@ function editProj(pid){
   document.getElementById('epst').innerHTML=S.statuses.map(s=>`<option value="${s.name}" ${s.name===p.status?'selected':''}>${s.name}</option>`).join('');
   document.getElementById('tsug').innerHTML='';oMo('m-project');
 }
-function savePrj(){
-  const name=document.getElementById('epname').value.trim();if(!name){alert('Nhập tên!');return;}
-  const tags=[...new Set(document.getElementById('eptags').value.split(',').map(t=>norm(t)).filter(Boolean))];
-  tags.forEach(t=>{if(!S.tags.includes(t))S.tags.push(t);});
-  const pid=document.getElementById('epid').value;
-  const data={name,description:document.getElementById('epdesc').value.trim(),useCase:document.getElementById('epuc').value.trim(),status:document.getElementById('epst').value,tags,keywords:document.getElementById('epkw').value.trim(),updatedAt:Date.now()}; // ✅ touch on save
-  if(pid){Object.assign(S.projects.find(x=>x.id===pid),data);}
-  else{S.projects.unshift({id:uid(),...data,checklist:Array(CHKS.length).fill(false),createdAt:Date.now(),snoozedUntil:0});}
-  bIdx();save();cMo('m-project');if(pid)renderDet(pid);else renderDash();toast(pid?'✅ Đã cập nhật!':'✅ Project mới!');
-}
+
 
 // FAB & BUTTONS
 document.getElementById('fab').addEventListener('click',()=>{if(S.cpid)oNoteMo(S.cpid);else oProjMo();});
@@ -803,8 +766,272 @@ document.addEventListener('keydown',e=>{
   if((e.metaKey||e.ctrlKey)&&e.key==='z'){e.preventDefault();doUndo();}
 });
 
-// INIT
-load();seed();bIdx();renderDash();
+// ═══════════════════════════════════════════════════════════════
+// SUPABASE LAYER — uses window.supabase (UMD, no import needed)
+// ═══════════════════════════════════════════════════════════════
+const SB_URL='https://tgsjsfplsolgbthvkcjk.supabase.co'
+const SB_KEY='sb_publishable_A9Q1nhfMsmN3A2GIrISQ4w_IaRgmyph'
+const sb=window.supabase.createClient(SB_URL,SB_KEY)
+
+// Field mapping: DB snake_case → JS camelCase
+function mapProject(r){return{id:r.id,name:r.name,description:r.description||'',useCase:r.use_case||'',status:r.status,tags:r.tags||[],keywords:r.keywords||'',checklist:r.checklist||[false,false,false,false,false],createdAt:new Date(r.created_at).getTime(),updatedAt:new Date(r.updated_at).getTime(),snoozedUntil:r.snoozed_until?new Date(r.snoozed_until).getTime():0}}
+function mapNote(r){return{id:r.id,projectId:r.project_id,content:r.content,type:r.type,resolved:!!r.resolved,isTodo:!!r.is_todo,isDone:!!r.is_done,createdAt:new Date(r.created_at).getTime(),updatedAt:r.updated_at?new Date(r.updated_at).getTime():null}}
+function mapImp(r){return{id:r.id,projectId:r.project_id,content:r.content,priority:r.priority,status:r.status}}
+function mapLink(r){return{id:r.id,projectId:r.project_id,label:r.label,url:r.url}}
+
+// ── loadAll ──────────────────────────────────────────────────────
+async function loadAll(){
+  const btn=document.getElementById('newpbtn');if(btn)btn.disabled=true;
+  try{
+    const[{data:projects,error:e1},{data:notes,error:e2},{data:imps,error:e3},{data:links,error:e4}]=await Promise.all([
+      sb.from('projects').select('*').order('updated_at',{ascending:false}),
+      sb.from('notes').select('*').order('created_at',{ascending:false}),
+      sb.from('improvements').select('*'),
+      sb.from('links').select('*'),
+    ]);
+    if(e1||e2||e3||e4){
+      const e=e1||e2||e3||e4;
+      console.error('[SB] Error code:',e.code,'message:',e.message,'hint:',e.hint,'details:',e.details);
+      toast('❌ '+e.message+' (code: '+e.code+')');
+      return false;
+    }
+    S.projects=(projects||[]).map(mapProject);
+    S.notes=(notes||[]).map(mapNote);
+    S.improvements=(imps||[]).map(mapImp);
+    S.links=(links||[]).map(mapLink);
+    const ts=new Set(S.tags);S.projects.forEach(p=>p.tags.forEach(t=>ts.add(t)));S.tags=[...ts];
+    bIdx();return true;
+  }catch(err){
+    console.error('[SB] Network/init error:',err);
+    toast('❌ Kết nối thất bại: '+err.message);
+    return false;
+  }finally{
+    if(btn)btn.disabled=false;
+  }
+}
+
+// ── Project CRUD ─────────────────────────────────────────────────
+async function dbSavePrj(pid,data){
+  const now=new Date().toISOString();
+  if(!pid){
+    const{data:row,error}=await sb.from('projects').insert({name:data.name,description:data.description,use_case:data.useCase,status:data.status,tags:data.tags,keywords:data.keywords,checklist:[false,false,false,false,false],snoozed_until:null,updated_at:now}).select().single();
+    if(error)throw error;return mapProject(row);
+  }
+  const{error}=await sb.from('projects').update({name:data.name,description:data.description,use_case:data.useCase,status:data.status,tags:data.tags,keywords:data.keywords,updated_at:now}).eq('id',pid);
+  if(error)throw error;return null;
+}
+async function dbUpdatePrjFields(id,fields){
+  const p={};
+  if('checklist' in fields)p.checklist=fields.checklist;
+  if('status' in fields)p.status=fields.status;
+  if('snoozedUntil' in fields)p.snoozed_until=fields.snoozedUntil?new Date(fields.snoozedUntil).toISOString():null;
+  if(fields._touch!==false)p.updated_at=new Date().toISOString();
+  const{error}=await sb.from('projects').update(p).eq('id',id);
+  if(error)throw error;
+}
+async function dbDelProj(id){
+  await Promise.all([sb.from('notes').delete().eq('project_id',id),sb.from('improvements').delete().eq('project_id',id),sb.from('links').delete().eq('project_id',id)]);
+  const{error}=await sb.from('projects').delete().eq('id',id);
+  if(error)throw error;
+}
+
+// ── Note CRUD ────────────────────────────────────────────────────
+async function dbSaveNote(nid,data,pid){
+  if(!nid){
+    const{data:row,error}=await sb.from('notes').insert({project_id:pid,content:data.content,type:data.type,is_todo:!!data.isTodo,resolved:false,is_done:false}).select().single();
+    if(error)throw error;
+    await sb.from('projects').update({updated_at:new Date().toISOString()}).eq('id',pid);
+    return mapNote(row);
+  }
+  const p={updated_at:new Date().toISOString()};
+  if('content' in data)p.content=data.content;if('type' in data)p.type=data.type;
+  if('isTodo' in data)p.is_todo=!!data.isTodo;if('resolved' in data)p.resolved=!!data.resolved;
+  if('isDone' in data)p.is_done=!!data.isDone;
+  const{error}=await sb.from('notes').update(p).eq('id',nid);
+  if(error)throw error;return null;
+}
+async function dbDelNote(id){const{error}=await sb.from('notes').delete().eq('id',id);if(error)throw error;}
+
+// ── Improvement CRUD ─────────────────────────────────────────────
+async function dbSaveImp(iid,data,pid){
+  if(!iid){
+    const{data:row,error}=await sb.from('improvements').insert({project_id:pid,content:data.content,priority:data.priority,status:data.status}).select().single();
+    if(error)throw error;return mapImp(row);
+  }
+  const p={};if('content' in data)p.content=data.content;if('priority' in data)p.priority=data.priority;if('status' in data)p.status=data.status;
+  const{error}=await sb.from('improvements').update(p).eq('id',iid);if(error)throw error;return null;
+}
+async function dbDelImp(id){const{error}=await sb.from('improvements').delete().eq('id',id);if(error)throw error;}
+
+// ── Link CRUD ────────────────────────────────────────────────────
+async function dbSaveLnk(data,pid){
+  const{data:row,error}=await sb.from('links').insert({project_id:pid,label:data.label,url:data.url}).select().single();
+  if(error)throw error;return mapLink(row);
+}
+async function dbDelLnk(id){const{error}=await sb.from('links').delete().eq('id',id);if(error)throw error;}
+
+// ── Realtime sync ────────────────────────────────────────────────
+function startRealtime(){
+  const mapFns={projects:mapProject,notes:mapNote,improvements:mapImp,links:mapLink};
+  ['projects','notes','improvements','links'].forEach(tbl=>{
+    sb.channel('db-'+tbl)
+      .on('postgres_changes',{event:'*',schema:'public',table:tbl},({eventType:ev,new:nr,old:or})=>{
+        const arr=S[tbl];
+        if(ev==='INSERT'){if(!arr.find(x=>x.id===nr.id))arr.unshift(mapFns[tbl](nr));}
+        else if(ev==='UPDATE'){const i=arr.findIndex(x=>x.id===nr.id);if(i!==-1)arr[i]=mapFns[tbl](nr);}
+        else if(ev==='DELETE'){S[tbl]=arr.filter(x=>x.id!==or.id);}
+        bIdx();if(S.cpid)renderDet(S.cpid);else renderDash();
+      })
+      .subscribe();
+  });
+  console.log('[SB] Realtime OK');
+}
+
+// ── App functions (Supabase versions) ────────────────────────────
+async function savePrj(){
+  const name=document.getElementById('epname').value.trim();if(!name){alert('Nhập tên!');return;}
+  const tags=[...new Set(document.getElementById('eptags').value.split(',').map(t=>norm(t)).filter(Boolean))];
+  tags.forEach(t=>{if(!S.tags.includes(t))S.tags.push(t);});
+  const pid=document.getElementById('epid').value;
+  const data={name,description:document.getElementById('epdesc').value.trim(),useCase:document.getElementById('epuc').value.trim(),status:document.getElementById('epst').value,tags,keywords:document.getElementById('epkw').value.trim()};
+  cMo('m-project');
+  if(pid){
+    const p=S.projects.find(x=>x.id===pid);Object.assign(p,data,{updatedAt:Date.now()});
+    bIdx();renderDet(pid);toast('✅ Đã cập nhật!');
+    try{await dbSavePrj(pid,data);}catch(e){toast('❌ DB: '+e.message);await loadAll();renderDash();}
+  }else{
+    const tid=uid(),now=Date.now();
+    const np={id:tid,...data,checklist:Array(CHKS.length).fill(false),createdAt:now,updatedAt:now,snoozedUntil:0};
+    S.projects.unshift(np);bIdx();renderDash();
+    try{const created=await dbSavePrj(null,data);const i=S.projects.findIndex(x=>x.id===tid);if(i!==-1)S.projects[i]={...np,...created};bIdx();renderDash();toast('✅ Project mới!');}
+    catch(e){S.projects=S.projects.filter(x=>x.id!==tid);bIdx();renderDash();toast('❌ DB: '+e.message);}
+  }
+}
+
+async function saveNote(){
+  const c=document.getElementById('encont').value.trim();if(!c)return;
+  const pid=document.getElementById('enpid').value,nid=document.getElementById('ennid').value;
+  const type=document.getElementById('entype').value,isTodo=document.getElementById('entodo').checked;
+  cMo('m-note');
+  if(nid){
+    const n=S.notes.find(x=>x.id===nid);if(n)Object.assign(n,{content:c,type,isTodo,updatedAt:Date.now()});
+    bIdx();if(S.cpid===pid)renderDet(pid);
+    try{await dbSaveNote(nid,{content:c,type,isTodo});toast('✅ Note đã cập nhật!');}
+    catch(e){toast('❌ DB: '+e.message);}
+  }else{
+    const tid=uid(),now=Date.now();
+    const nn={id:tid,projectId:pid,content:c,type,isTodo,isDone:false,resolved:false,createdAt:now,updatedAt:null};
+    S.notes.unshift(nn);touchP(pid);bIdx();if(S.cpid===pid)renderDet(pid);
+    try{const created=await dbSaveNote(null,{content:c,type,isTodo},pid);const i=S.notes.findIndex(x=>x.id===tid);if(i!==-1)S.notes[i]={...nn,id:created.id};bIdx();if(S.cpid===pid)renderDet(pid);toast('📝 Note đã thêm!');}
+    catch(e){S.notes=S.notes.filter(x=>x.id!==tid);bIdx();if(S.cpid===pid)renderDet(pid);toast('❌ DB: '+e.message);}
+  }
+}
+
+async function togRes(nid,pid){
+  const n=S.notes.find(x=>x.id===nid);if(!n)return;n.resolved=!n.resolved;bIdx();renderDet(pid);
+  try{await dbSaveNote(nid,{resolved:n.resolved});toast(n.resolved?'🐛 Bug fixed!':'↩ Bug reopened');}
+  catch(e){n.resolved=!n.resolved;bIdx();renderDet(pid);toast('❌ '+e.message);}
+}
+async function togTodo(nid,pid){
+  const n=S.notes.find(x=>x.id===nid);if(!n)return;n.isDone=!n.isDone;n.updatedAt=Date.now();bIdx();renderDet(pid);
+  try{await dbSaveNote(nid,{isDone:n.isDone});toast(n.isDone?'☑ Done!':'☐ Reopened');}
+  catch(e){n.isDone=!n.isDone;bIdx();renderDet(pid);toast('❌ '+e.message);}
+}
+async function togChk(pid,idx){
+  const p=S.projects.find(x=>x.id===pid);if(!p.checklist)p.checklist=Array(CHKS.length).fill(false);
+  p.checklist[idx]=!p.checklist[idx];p.updatedAt=Date.now();renderDet(pid);
+  try{await dbUpdatePrjFields(pid,{checklist:p.checklist});}
+  catch(e){p.checklist[idx]=!p.checklist[idx];renderDet(pid);toast('❌ '+e.message);}
+}
+async function saveImp(){
+  const c=document.getElementById('eicont').value.trim();if(!c)return;
+  const pid=document.getElementById('eipid').value,priority=document.getElementById('eipr').value,status=document.getElementById('eist').value;
+  cMo('m-imp');const tid=uid();
+  S.improvements.push({id:tid,projectId:pid,content:c,priority,status});if(S.cpid===pid)renderDet(pid);
+  try{const created=await dbSaveImp(null,{content:c,priority,status},pid);const i=S.improvements.findIndex(x=>x.id===tid);if(i!==-1)S.improvements[i].id=created.id;}
+  catch(e){S.improvements=S.improvements.filter(x=>x.id!==tid);if(S.cpid===pid)renderDet(pid);toast('❌ '+e.message);}
+}
+async function updIS(iid,pid,status){
+  const i=S.improvements.find(x=>x.id===iid);if(!i)return;const prev=i.status;i.status=status;
+  try{await dbSaveImp(iid,{status});}
+  catch(e){i.status=prev;if(S.cpid===pid)renderDet(pid);toast('❌ '+e.message);}
+}
+async function saveLink(){
+  const url=document.getElementById('elurl').value.trim();if(!url)return;
+  const pid=document.getElementById('elpid').value,label=document.getElementById('ellbl').value.trim()||'link';
+  cMo('m-link');const tid=uid();
+  S.links.push({id:tid,projectId:pid,label,url});if(S.cpid===pid)renderDet(pid);
+  try{const created=await dbSaveLnk({label,url},pid);const i=S.links.findIndex(x=>x.id===tid);if(i!==-1)S.links[i].id=created.id;}
+  catch(e){S.links=S.links.filter(x=>x.id!==tid);if(S.cpid===pid)renderDet(pid);toast('❌ '+e.message);}
+}
+function askDelN(nid,pid){
+  const snap=S.notes.find(x=>x.id===nid);
+  cfm('Xoá note?','','🗑','Xoá',async()=>{
+    S.notes=S.notes.filter(n=>n.id!==nid);bIdx();renderDet(pid);
+    pushU('Xoá note',()=>{S.notes.push(snap);bIdx();renderDet(pid);});
+    toast('🗑 Đã xoá note',true);
+    try{await dbDelNote(nid);}catch(e){S.notes.push(snap);bIdx();renderDet(pid);toast('❌ '+e.message);}
+  });
+}
+function askDelImp(iid,pid){
+  const snap=S.improvements.find(x=>x.id===iid);
+  cfm('Xoá improvement?','','🗑','Xoá',async()=>{
+    S.improvements=S.improvements.filter(i=>i.id!==iid);renderDet(pid);
+    pushU('Xoá improvement',()=>{S.improvements.push(snap);renderDet(pid);});
+    toast('🗑 Đã xoá',true);
+    try{await dbDelImp(iid);}catch(e){S.improvements.push(snap);renderDet(pid);toast('❌ '+e.message);}
+  });
+}
+function askDelLnk(lid,pid){
+  const snap=S.links.find(x=>x.id===lid);
+  cfm('Xoá link?','','🗑','Xoá',async()=>{
+    S.links=S.links.filter(l=>l.id!==lid);renderDet(pid);
+    pushU('Xoá link',()=>{S.links.push(snap);renderDet(pid);});
+    toast('🗑 Đã xoá link',true);
+    try{await dbDelLnk(lid);}catch(e){S.links.push(snap);renderDet(pid);toast('❌ '+e.message);}
+  });
+}
+function askDelProj(pid){
+  const p=S.projects.find(x=>x.id===pid);
+  cfm(`Xoá "${p?.name}"?`,'Notes, links, improvements sẽ mất. Không undo được.','⚠️','Xoá Project',async()=>{
+    S.projects=S.projects.filter(x=>x.id!==pid);S.notes=S.notes.filter(n=>n.projectId!==pid);
+    S.improvements=S.improvements.filter(i=>i.projectId!==pid);S.links=S.links.filter(l=>l.projectId!==pid);
+    bIdx();showDash();toast('🗑 Project đã xoá');
+    try{await dbDelProj(pid);}catch(e){await loadAll();renderDash();toast('❌ '+e.message);}
+  });
+}
+async function contProj(pid){
+  const p=S.projects.find(x=>x.id===pid);if(!p)return;
+  p.status='building';p.updatedAt=Date.now();p.snoozedUntil=0;bIdx();renderDet(pid);rSide();
+  try{await dbUpdatePrjFields(pid,{status:'building',snoozedUntil:0});toast('▶ Active!');}
+  catch(e){toast('❌ '+e.message);}
+}
+async function snzProj(pid){
+  const p=S.projects.find(x=>x.id===pid);if(!p)return;
+  p.snoozedUntil=Date.now()+7*864e5;renderDet(pid);
+  try{await dbUpdatePrjFields(pid,{snoozedUntil:p.snoozedUntil,_touch:false});toast('💤 Snooze 7d');}
+  catch(e){toast('❌ '+e.message);}
+}
+async function dropProj(pid){
+  const p=S.projects.find(x=>x.id===pid);if(!p)return;
+  p.status='dropped';p.updatedAt=Date.now();bIdx();renderDet(pid);rSide();
+  try{await dbUpdatePrjFields(pid,{status:'dropped'});toast('Project đã drop');}
+  catch(e){toast('❌ '+e.message);}
+}
+
+// ── Boot ─────────────────────────────────────────────────────────
+async function initSupabase(){
+  const ok=await loadAll();
+  if(ok){
+    renderDash();startRealtime();
+  }else{
+    const g=document.getElementById('pgrid');
+    if(g)g.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:40px"><div style="color:var(--red);font-size:1.2rem;margin-bottom:8px">❌ Không kết nối được Supabase</div><div style="color:var(--text3);font-size:.8rem;margin-bottom:14px">Xem Console (F12) để biết chi tiết lỗi</div><button class="btn bp" onclick="initSupabase()">🔄 Thử lại</button></div>';
+  }
+}
+
+// sb, loadAll, và initSupabase đã khai báo đầy đủ → gọi ở đây
+initSupabase();
 </script>
 </body>
 </html>
