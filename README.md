@@ -168,7 +168,7 @@ links (
 
 ### 2. Config trong file HTML
 
-M�� `devbrain-v4.html`, tìm đoạn này và thay bằng credentials của mày:
+M�� `devbrain-v4.html`, tìm đoạn này và thay bằng credentials của mày:
 
 ```js
 const SB_URL = 'https://your-project.supabase.co'
