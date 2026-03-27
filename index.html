@@ -117,7 +117,7 @@ a{text-decoration:none;color:inherit}
 .dhead{display:grid;grid-template-columns:1fr auto;gap:18px;align-items:flex-start;margin-bottom:20px}
 .dtitle{font-family:'Syne',sans-serif;font-size:1.65rem;font-weight:800;letter-spacing:-.5px;line-height:1.2}
 .dmeta{display:flex;align-items:center;gap:7px;margin-top:6px;flex-wrap:wrap}
-.ddesc{color:var(--text2);font-size:.84rem;margin-top:5px;line-height:1.6}
+.ddesc{color:var(--text2);font-size:.84rem;margin-top:5px;line-height:1.6;white-space:pre-line}
 .dgrid{display:grid;grid-template-columns:1fr 302px;gap:14px;align-items:flex-start}
 .dmain{display:flex;flex-direction:column;gap:12px}
 .dside{display:flex;flex-direction:column;gap:12px}
@@ -228,6 +228,23 @@ a{text-decoration:none;color:inherit}
   .fab{bottom:76px;right:14px;width:44px;height:44px;font-size:1.2rem}
 }
 @media(min-width:769px){.bnav{display:none}}
+/* INLINE NOTE EDIT */
+.nc-edit{width:100%;background:var(--bg2);border:1.5px solid var(--accent);border-radius:var(--rs);padding:7px 9px;font-size:.8rem;color:var(--text);resize:vertical;min-height:60px;font-family:inherit;line-height:1.5}
+.nc-edit:focus{outline:none}
+.ne-actions{display:flex;gap:5px;margin-top:5px}
+
+/* TODO NOTE */
+.ntodo-wrap{display:flex;align-items:flex-start;gap:8px;width:100%}
+.ntodo-cb{width:15px;height:15px;accent-color:var(--accent);cursor:pointer;flex-shrink:0;margin-top:3px}
+.nc.todo-done{color:var(--text3);text-decoration:line-through;opacity:.65}
+
+/* DECISION PIN */
+.nitem.is-decision{background:var(--blue-bg);border-radius:var(--rs);padding:10px 10px 10px 0;margin:2px 0;border-left:3px solid var(--blue)}
+.nitem.is-decision .ntb{background:var(--blue);color:#fff}
+
+/* NOTE FILTER TODOS */
+.tf-todo-badge{background:var(--accent);color:#fff;font-size:.58rem;padding:1px 5px;border-radius:10px;margin-left:3px;font-weight:700}
+
 </style>
 </head>
 <body>
@@ -320,10 +337,15 @@ a{text-decoration:none;color:inherit}
     <div class="mh"><div class="mt">Thêm Note</div><button class="btn bg bic" onclick="cMo('m-note')">✕</button></div>
     <div class="mb">
       <input type="hidden" id="enpid">
+      <input type="hidden" id="ennid">
       <div class="fg"><label class="fl">Nội dung *</label><textarea class="fi fta" id="encont" placeholder="Ý tưởng, bug, quyết định..." style="min-height:90px"></textarea></div>
       <div class="fg"><label class="fl">Loại</label><select class="fsel" id="entype"><option value="log">📝 Log</option><option value="idea">💡 Idea</option><option value="bug">🐛 Bug</option><option value="decision">✅ Decision</option></select></div>
+      <div style="display:flex;align-items:center;gap:8px;padding:4px 0">
+        <input type="checkbox" id="entodo" style="width:15px;height:15px;accent-color:var(--accent);cursor:pointer">
+        <label for="entodo" style="font-size:.8rem;color:var(--text2);cursor:pointer">Đánh dấu là TODO (có checkbox)</label>
+      </div>
     </div>
-    <div class="mf"><button class="btn bs" onclick="cMo('m-note')">Huỷ</button><button class="btn bp" onclick="saveNote()">Thêm</button></div>
+    <div class="mf"><button class="btn bs" onclick="cMo('m-note')">Huỷ</button><button class="btn bp" id="note-save-btn" onclick="saveNote()">Thêm</button></div>
   </div>
 </div>
 
@@ -576,6 +598,7 @@ function renderDet(id){
         <div class="pb2">
           <div class="tfl">
             <button class="tf ${S.nf==='all'?'active':''}" onclick="setNF('all','${id}')">All</button>
+            <button class="tf ${S.nf==='todo'?'active':''}" onclick="setNF('todo','${id}')">☐ Todo${(NI[id]||[]).filter(n=>n.isTodo&&!n.isDone).length?`<span class='tf-todo-badge'>${(NI[id]||[]).filter(n=>n.isTodo&&!n.isDone).length}</span>`:''}</button>
             <button class="tf ${S.nf==='idea'?'active':''}" onclick="setNF('idea','${id}')">💡 Idea</button>
             <button class="tf ${S.nf==='bug'?'active':''}" onclick="setNF('bug','${id}')">🐛 Bug${obug.length?` <b style="color:var(--red)">${obug.length}</b>`:''}</button>
             <button class="tf ${S.nf==='log'?'active':''}" onclick="setNF('log','${id}')">📝 Log</button>
@@ -607,7 +630,7 @@ function renderDet(id){
       <div class="panel">
         <div class="ph"><div class="pt">ℹ️ Info</div></div>
         <div class="pb2">
-          ${p.useCase?`<div style="margin-bottom:11px"><div style="font-size:.69rem;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px">USE CASE</div><div style="font-size:.79rem;color:var(--text2);line-height:1.5">${p.useCase}</div></div>`:''}
+          ${p.useCase?`<div style="margin-bottom:11px"><div style="font-size:.69rem;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px">USE CASE</div><div style="font-size:.79rem;color:var(--text2);line-height:1.5;white-space:pre-line">${p.useCase}</div></div>`:''}
           ${p.keywords?`<div style="margin-bottom:11px"><div style="font-size:.69rem;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px">KEYWORDS</div><div style="font-size:.75rem;color:var(--text3);font-family:'DM Mono',monospace">${p.keywords}</div></div>`:''}
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:.72rem"><div><span style="color:var(--text3)">Created</span><br><span style="font-family:'DM Mono',monospace;font-size:.69rem">${fmtD(p.createdAt)}</span></div><div><span style="color:var(--text3)">Updated</span><br><span style="font-family:'DM Mono',monospace;font-size:.69rem">${fmtD(p.updatedAt)}</span></div></div>
         </div>
@@ -625,12 +648,41 @@ function renderDet(id){
 // NOTES
 const NICO={idea:'💡',bug:'🐛',log:'📝',decision:'✅'};
 function rNotes(aN,pid){
-  const flt=S.nf==='all'?aN:aN.filter(n=>n.type===S.nf);
+  let flt;
+  if(S.nf==='todo') flt=aN.filter(n=>n.isTodo&&!n.isDone);
+  else if(S.nf==='all') flt=aN;
+  else flt=aN.filter(n=>n.type===S.nf);
   const pg=S.npages[pid]||1;const sh=flt.slice(0,pg*NP);const hm=flt.length>sh.length;
-  if(!flt.length)return`<div class="empt" style="padding:18px"><div style="font-size:.78rem">Không có note</div></div>`;
-  return sh.map(n=>`<div class="nitem"><div class="ndot nd-${n.type}">${NICO[n.type]||'📝'}</div><div class="nb"><div class="nc ${n.resolved?'res':''}">${n.content}</div><div class="nft"><span class="ntb nt-${n.type}">${n.type}</span>${n.resolved?'<span style="font-size:.62rem;color:var(--green);font-weight:600">✅fixed</span>':''}<span class="ndate">${timeAgo(n.createdAt)}</span><div class="nact">${n.type==='bug'?`<button class="resbtn ${n.resolved?'isres':''}" onclick="togRes('${n.id}','${pid}')">${n.resolved?'↩':'✓ Fix'}</button>`:''}<button class="dbtn" onclick="askDelN('${n.id}','${pid}')">✕</button></div></div></div></div>`).join('')+
+  if(!flt.length)return`<div class="empt" style="padding:18px"><div style="font-size:.78rem">Không có note nào</div></div>`;
+  return sh.map(n=>noteHTML(n,pid)).join('')+
   (hm?`<button class="lmbtn" onclick="lmNotes('${pid}')">Xem thêm (${flt.length-sh.length} còn lại)</button>`:'');
 }
+function noteHTML(n,pid){
+  const isDecision=n.type==='decision';
+  const contentEl=n.isTodo
+    ?`<div class="ntodo-wrap"><input type="checkbox" class="ntodo-cb" ${n.isDone?'checked':''} onchange="togTodo('${n.id}','${pid}')"><div class="nc ${n.isDone?'todo-done':''} ${n.resolved?'res':''}">${esc(n.content)}</div></div>`
+    :`<div class="nc ${n.resolved?'res':''}">${esc(n.content)}</div>`;
+  const updTag=n.updatedAt?`<span class="ndate" style="color:var(--blue);font-size:.6rem">✎ ${timeAgo(n.updatedAt)}</span>`:'';
+  return`<div class="nitem ${isDecision?'is-decision':''}" id="ni-${n.id}">
+    <div class="ndot nd-${n.type}">${NICO[n.type]||'📝'}</div>
+    <div class="nb">
+      ${contentEl}
+      <div class="nft">
+        <span class="ntb nt-${n.type}">${n.type}</span>
+        ${n.isTodo?`<span class="ntb" style="background:var(--bg3);color:var(--text3)">todo</span>`:''}
+        ${n.resolved?'<span style="font-size:.62rem;color:var(--green);font-weight:600">✅fixed</span>':''}
+        <span class="ndate">${timeAgo(n.createdAt)}</span>
+        ${updTag}
+        <div class="nact">
+          ${n.type==='bug'?`<button class="resbtn ${n.resolved?'isres':''}" onclick="togRes('${n.id}','${pid}')">${n.resolved?'↩':'✓ Fix'}</button>`:''}
+          <button class="dbtn" title="Edit" onclick="editNoteMo('${n.id}','${pid}')">✎</button>
+          <button class="dbtn" onclick="askDelN('${n.id}','${pid}')">✕</button>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 function lmNotes(pid){S.npages[pid]=(S.npages[pid]||1)+1;document.getElementById('nlist').innerHTML=rNotes(NI[pid]||[],pid);}
 function setNF(f,pid){S.nf=f;S.npages[pid]=1;document.getElementById('nlist').innerHTML=rNotes(NI[pid]||[],pid);document.querySelectorAll('.tf').forEach(b=>b.classList.remove('active'));event.target.classList.add('active');}
 function togRes(nid,pid){const n=S.notes.find(x=>x.id===nid);if(!n)return;n.resolved=!n.resolved;bIdx();save();renderDet(pid);toast(n.resolved?'🐛 Bug fixed!':'↩ Bug reopened');}
@@ -664,15 +716,53 @@ function oLinkMo(pid){document.getElementById('elpid').value=pid;document.getEle
 function saveLink(){const url=document.getElementById('elurl').value.trim();if(!url)return;const pid=document.getElementById('elpid').value;S.links.push({id:uid(),projectId:pid,label:document.getElementById('ellbl').value.trim()||'link',url});save();cMo('m-link');if(S.cpid===pid)renderDet(pid);}
 
 // NOTE MODAL
-function oNoteMo(pid){document.getElementById('enpid').value=pid;document.getElementById('encont').value='';document.getElementById('entype').value='log';oMo('m-note');setTimeout(()=>document.getElementById('encont').focus(),100);}
+function oNoteMo(pid){
+  document.getElementById('enpid').value=pid;
+  document.getElementById('ennid').value='';
+  document.getElementById('encont').value='';
+  document.getElementById('entype').value='log';
+  document.getElementById('entodo').checked=false;
+  document.querySelector('#m-note .mt').textContent='Thêm Note';
+  document.getElementById('note-save-btn').textContent='Thêm';
+  oMo('m-note');setTimeout(()=>document.getElementById('encont').focus(),100);
+}
+function editNoteMo(nid,pid){
+  const n=S.notes.find(x=>x.id===nid);if(!n)return;
+  document.getElementById('enpid').value=pid;
+  document.getElementById('ennid').value=nid;
+  document.getElementById('encont').value=n.content;
+  document.getElementById('entype').value=n.type;
+  document.getElementById('entodo').checked=!!n.isTodo;
+  document.querySelector('#m-note .mt').textContent='Edit Note';
+  document.getElementById('note-save-btn').textContent='Lưu';
+  oMo('m-note');setTimeout(()=>document.getElementById('encont').focus(),100);
+}
 function saveNote(){
   const c=document.getElementById('encont').value.trim();if(!c)return;
   const pid=document.getElementById('enpid').value;
-  S.notes.unshift({id:uid(),projectId:pid,content:c,type:document.getElementById('entype').value,resolved:false,createdAt:Date.now()});
-  touchP(pid); // ✅ always update updatedAt on new note
-  bIdx();save();cMo('m-note');
-  if(S.cpid===pid)renderDet(pid);if(!S.cpid)renderGrid();
-  toast('📝 Note added!');
+  const nid=document.getElementById('ennid').value;
+  const type=document.getElementById('entype').value;
+  const isTodo=document.getElementById('entodo').checked;
+  if(nid){
+    // EDIT MODE
+    const n=S.notes.find(x=>x.id===nid);
+    if(n){n.content=c;n.type=type;n.isTodo=isTodo;n.updatedAt=Date.now();}
+    bIdx();save();cMo('m-note');if(S.cpid===pid)renderDet(pid);
+    toast('✅ Note đã cập nhật!');
+  } else {
+    // CREATE MODE
+    S.notes.unshift({id:uid(),projectId:pid,content:c,type,isTodo,isDone:false,resolved:false,createdAt:Date.now()});
+    touchP(pid);
+    bIdx();save();cMo('m-note');
+    if(S.cpid===pid)renderDet(pid);if(!S.cpid)renderGrid();
+    toast('📝 Note đã thêm!');
+  }
+}
+function togTodo(nid,pid){
+  const n=S.notes.find(x=>x.id===nid);if(!n)return;
+  n.isDone=!n.isDone;n.updatedAt=Date.now();
+  bIdx();save();renderDet(pid);
+  toast(n.isDone?'☑ Done!':'☐ Reopened');
 }
 
 // PROJECT MODAL
