@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DevBrain v3</title>
+<title>DevBrain v5</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:wght@300;400;500&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
 <style>
@@ -218,14 +218,29 @@ a{text-decoration:none;color:inherit}
 .idrop:hover,.idrop.drag{border-color:var(--accent);background:var(--accent-bg);color:var(--accent)}
 @media(max-width:768px){
   .sidebar{transform:translateX(-100%)}.sidebar.open{transform:translateX(0)}
-  .main{margin-left:0}.con{padding:14px;padding-bottom:74px}.hdr{padding:10px 14px}
+  .main{margin-left:0}.con{padding:16px;padding-bottom:80px}.hdr{padding:11px 16px}
   .mbtn{display:flex}.sbar{grid-template-columns:repeat(2,1fr)}
   .dgrid{grid-template-columns:1fr}.dhead{grid-template-columns:1fr}
   .pgrid{grid-template-columns:1fr}.fr{grid-template-columns:1fr}
-  .bnav{display:flex;position:fixed;bottom:0;left:0;right:0;background:var(--surface);border-top:1px solid var(--border);padding:7px 0 env(safe-area-inset-bottom,7px);z-index:100}
-  .bni{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:3px;color:var(--text3);font-size:.61rem;font-weight:600;cursor:pointer;transition:color .13s}
-  .bni.active{color:var(--accent)}.bni .ico{font-size:1.1rem}
-  .fab{bottom:76px;right:14px;width:44px;height:44px;font-size:1.2rem}
+  /* Mobile font-size minimum 16px */
+  html{font-size:16px}
+  .sinp{font-size:16px}
+  .fi,.fsel,.fta{font-size:16px}
+  /* Larger tap targets */
+  .btn{padding:10px 16px;font-size:.88rem}
+  .bsm{padding:8px 13px;font-size:.8rem}
+  .ni{padding:11px 10px;font-size:.9rem}
+  .chi{padding:10px 9px}
+  .chi input[type=checkbox]{width:18px;height:18px}
+  .dbtn{padding:5px 8px;font-size:.76rem}
+  .tf{padding:7px 11px;font-size:.78rem}
+  .bnav{display:flex;position:fixed;bottom:0;left:0;right:0;background:var(--surface);border-top:1px solid var(--border);padding:9px 0 env(safe-area-inset-bottom,9px);z-index:100}
+  .bni{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:4px;color:var(--text3);font-size:.68rem;font-weight:600;cursor:pointer;transition:color .13s}
+  .bni.active{color:var(--accent)}.bni .ico{font-size:1.3rem}
+  .fab{bottom:80px;right:16px;width:50px;height:50px;font-size:1.3rem}
+  /* Card spacing */
+  .pc{padding:16px}
+  .panel-body,.pb2{padding:14px 16px}
 }
 @media(min-width:769px){.bnav{display:none}}
 /* INLINE NOTE EDIT */
@@ -256,6 +271,49 @@ a{text-decoration:none;color:inherit}
 .info-more-btn{font-size:.71rem;color:var(--accent);background:none;border:none;cursor:pointer;padding:3px 0 0;font-weight:600;display:block}
 .info-more-btn:hover{text-decoration:underline}
 
+/* ── SPECING SYSTEM ─────────────────────────────────────── */
+.spec-item{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rs);overflow:hidden;margin-bottom:6px;transition:border-color .15s}
+.spec-item:hover{border-color:var(--border2)}
+.spec-head{display:flex;align-items:center;gap:8px;padding:10px 12px;cursor:pointer;user-select:none}
+.spec-head:hover{background:var(--bg3)}
+.spec-role{font-size:.62rem;font-weight:700;padding:2px 8px;border-radius:20px;text-transform:uppercase;letter-spacing:.5px;font-family:'DM Mono',monospace;flex-shrink:0}
+.sr-user{background:var(--blue-bg);color:var(--blue)}
+.sr-chatgpt{background:var(--green-bg);color:var(--green)}
+.sr-claude{background:var(--accent-bg);color:var(--accent)}
+.spec-type-badge{font-size:.6rem;padding:2px 6px;border-radius:20px;background:var(--bg3);color:var(--text3);font-family:'DM Mono',monospace;border:1px solid var(--border);flex-shrink:0}
+.spec-preview{flex:1;font-size:.8rem;color:var(--text2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.spec-sel-dot{width:8px;height:8px;border-radius:50%;background:var(--border2);flex-shrink:0;transition:background .15s}
+.spec-sel-dot.selected{background:var(--green)}
+.spec-arrow{font-size:.7rem;color:var(--text3);flex-shrink:0;transition:transform .2s;font-style:normal}
+.spec-item.open .spec-arrow{transform:rotate(180deg)}
+.spec-body{display:none;padding:0 12px 12px;border-top:1px solid var(--border)}
+.spec-item.open .spec-body{display:block}
+.spec-content{font-size:.82rem;line-height:1.6;color:var(--text);white-space:pre-line;padding:10px 0 8px}
+.spec-img{max-width:100%;border-radius:var(--rs);margin:6px 0;border:1px solid var(--border)}
+.spec-link-btn{font-size:.75rem;color:var(--blue);text-decoration:none;display:inline-flex;align-items:center;gap:4px}
+.spec-link-btn:hover{text-decoration:underline}
+.spec-note-wrap{margin-top:8px;padding-top:8px;border-top:1px dashed var(--border)}
+.spec-note-lbl{font-size:.65rem;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+.spec-note-inp{width:100%;background:var(--bg);border:1.5px solid var(--border);border-radius:var(--rs);padding:7px 10px;font-size:.8rem;color:var(--text);resize:vertical;min-height:52px;font-family:inherit}
+.spec-note-inp:focus{border-color:var(--accent);outline:none}
+.spec-foot{display:flex;align-items:center;gap:7px;margin-top:8px;flex-wrap:wrap}
+.spec-date{font-size:.65rem;color:var(--text3);font-family:'DM Mono',monospace}
+.spec-chk-wrap{display:flex;align-items:center;gap:5px;font-size:.77rem;color:var(--text2);cursor:pointer}
+.spec-chk-wrap input{width:14px;height:14px;accent-color:var(--green)}
+.spec-code{background:var(--bg);border:1px solid var(--border);border-radius:var(--rs);padding:8px 10px;font-size:.76rem;font-family:'DM Mono',monospace;color:var(--text2);overflow-x:auto;white-space:pre;margin:4px 0}
+/* Image upload area */
+.img-upload-area{border:2px dashed var(--border2);border-radius:var(--rs);padding:14px;text-align:center;cursor:pointer;transition:all .15s;font-size:.78rem;color:var(--text3)}
+.img-upload-area:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-bg)}
+.img-preview{max-width:100%;max-height:160px;border-radius:var(--rs);border:1px solid var(--border);margin-top:8px;display:block}
+/* Specing count badge in panel header */
+.spec-count-badge{font-size:.62rem;color:var(--accent);font-family:'DM Mono',monospace;font-weight:700;background:var(--accent-bg);padding:1px 7px;border-radius:20px}
+
+/* SAVE STATE INDICATOR — FIX5 */
+#save-indicator{font-size:.72rem;font-family:'DM Mono',monospace;color:var(--text3);transition:color .2s;display:flex;align-items:center;gap:4px;white-space:nowrap;min-width:70px}
+#save-indicator.saving{color:var(--blue)}
+#save-indicator.saved{color:var(--green)}
+#save-indicator.error{color:var(--red)}
+
 </style>
 </head>
 <body>
@@ -285,6 +343,7 @@ a{text-decoration:none;color:inherit}
   <header class="hdr">
     <button class="mbtn btn" onclick="togSB()">☰</button>
     <div class="htitle" id="htitle">Dashboard</div>
+    <div id="save-indicator"></div>
     <div class="swrap"><span class="sico">⌕</span><input class="sinp" type="text" placeholder="Tìm project, note, tag… (⌘K)" id="sinp" oninput="onSearch(this.value)"></div>
     <div class="hact"><button class="btn bp" id="newpbtn">+ New Project</button></div>
   </header>
@@ -404,6 +463,65 @@ a{text-decoration:none;color:inherit}
   </div>
 </div>
 
+
+<!-- MODAL: SPEC ITEM -->
+<div class="mo" id="m-spec">
+  <div class="modal" style="max-width:560px">
+    <div class="mh"><div class="mt" id="m-spec-title">Thêm Spec Item</div><button class="btn bg bic" onclick="cMo('m-spec')">✕</button></div>
+    <div class="mb">
+      <input type="hidden" id="es-pid">
+      <input type="hidden" id="es-sid">
+      <div class="fr">
+        <div class="fg"><label class="fl">Role</label>
+          <select class="fsel" id="es-role">
+            <option value="user">👤 User</option>
+            <option value="chatgpt">🟢 ChatGPT</option>
+            <option value="claude">🟠 Claude</option>
+          </select>
+        </div>
+        <div class="fg"><label class="fl">Type</label>
+          <select class="fsel" id="es-type" onchange="onSpecTypeChange(this.value)">
+            <option value="text">📝 Text</option>
+            <option value="code">💻 Code</option>
+            <option value="link">🔗 Link</option>
+            <option value="image">🖼 Image</option>
+          </select>
+        </div>
+      </div>
+      <div class="fg"><label class="fl">Nội dung *</label>
+        <textarea class="fi fta" id="es-content" placeholder="Nhập nội dung..." style="min-height:90px"></textarea>
+      </div>
+      <!-- Link field (show when type=link) -->
+      <div class="fg" id="es-link-wrap" style="display:none">
+        <label class="fl">URL</label>
+        <input class="fi" id="es-link" type="url" placeholder="https://...">
+      </div>
+      <!-- Image upload (show when type=image) -->
+      <div class="fg" id="es-img-wrap" style="display:none">
+        <label class="fl">Ảnh (upload lên Supabase Storage)</label>
+        <div class="img-upload-area" onclick="document.getElementById('es-img-file').click()" id="es-img-drop">
+          <div>📎 Click hoặc kéo thả ảnh vào đây</div>
+          <div style="font-size:.72rem;margin-top:3px;color:var(--text3)">PNG, JPG, GIF — max 5MB</div>
+        </div>
+        <input type="file" id="es-img-file" accept="image/*" style="display:none" onchange="onSpecImgSelect(this.files[0])">
+        <img id="es-img-preview" class="img-preview" style="display:none">
+        <div id="es-img-status" style="font-size:.75rem;color:var(--text3);margin-top:4px"></div>
+      </div>
+      <div class="fg"><label class="fl">Note / Insight (tùy chọn)</label>
+        <textarea class="fi fta" id="es-note" placeholder="Ghi chú, insight của mày về item này..." style="min-height:52px"></textarea>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;padding:4px 0">
+        <input type="checkbox" id="es-selected" style="width:15px;height:15px;accent-color:var(--green)">
+        <label for="es-selected" style="font-size:.82rem;cursor:pointer;color:var(--text2)">Đánh dấu là Selected (đã chọn dùng)</label>
+      </div>
+    </div>
+    <div class="mf">
+      <button class="btn bs" onclick="cMo('m-spec')">Huỷ</button>
+      <button class="btn bp" id="spec-save-btn" onclick="saveSpecItem()">Thêm</button>
+    </div>
+  </div>
+</div>
+
 <div class="mo cfm" id="m-cfm">
   <div class="modal">
     <div class="mb" style="padding:24px 24px 20px">
@@ -417,16 +535,37 @@ a{text-decoration:none;color:inherit}
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script>
+// ── DATA ────────────────────────────────────────────────────
+// USER CONFIG
+const CURRENT_USER = 'RongLeo'
+const APP_ID = 'devbrain'
+
 const STATUSES=[{id:'s1',name:'idea',color:'#6b3fa0'},{id:'s2',name:'spec',color:'#1a5fa8'},{id:'s3',name:'building',color:'#c8440a'},{id:'s4',name:'testing',color:'#b07000'},{id:'s5',name:'done',color:'#2d7a4f'},{id:'s6',name:'improving',color:'#1a5fa8'},{id:'s7',name:'dropped',color:'#9a9088'}];
-const CHKS=['Có spec / tài liệu','Có UI prototype','Backend hoạt động','Deploy lên server','Test cơ bản xong'];
+// REPLACE: removed "UI prototype", added sync tracking
+const CHKS=['Có spec / tài liệu','Backend hoạt động','Deploy lên server','Test cơ bản xong','Đã sync / documented'];
 const DTAGS=['web','mobile','ai','tool','cli','design','game','api','saas','chrome-ext'];
 const NP=20;
-let S={projects:[],notes:[],improvements:[],links:[],tags:[...DTAGS],statuses:[...STATUSES],view:'grid',fst:'all',ftag:null,search:'',nf:'all',cpid:null,npages:{}};
+let S={
+  projects:[],notes:[],improvements:[],links:[],
+  specItems:[],          // ADD: specing system
+  tags:[...DTAGS],statuses:[...STATUSES],
+  view:'grid',fst:'all',ftag:null,search:'',nf:'all',cpid:null,npages:{},
+  specExpanded:{},       // ADD: which spec items are open (accordion state)
+  specPages:{},          // FIX2: pagination per project — {pid: {offset, hasMore}}
+};
 let NI={};
+// Draft state — prevents losing data when clicking outside modal
+let draftProject=null;
 const uid=()=>'x'+Math.random().toString(36).substr(2,9);
 function save(){}
 function load(){}
-function bIdx(){NI={};S.notes.forEach(n=>{if(!NI[n.projectId])NI[n.projectId]=[];NI[n.projectId].push(n);});Object.values(NI).forEach(a=>a.sort((a,b)=>b.createdAt-a.createdAt));}
+function bIdx(){
+  // Index notes by projectId — O(1) lookup
+  NI={};
+  S.notes.forEach(n=>{if(!NI[n.projectId])NI[n.projectId]=[];NI[n.projectId].push(n);});
+  Object.values(NI).forEach(a=>a.sort((a,b)=>b.createdAt-a.createdAt));
+  // specItems also kept in S.specItems (no separate index needed — filtered per project)
+}
 function seed(){return;
   if(S.projects.length>0)return;
   const now=Date.now(),day=864e5;
@@ -452,20 +591,49 @@ function seed(){return;
   S.links=[{id:'l1',projectId:'p1',label:'repo',url:'https://github.com/dev/devbrain'},{id:'l2',projectId:'p1',label:'demo',url:'https://devbrain.app'}];
   save();
 }
-function timeAgo(ts){const d=Math.floor((Date.now()-ts)/864e5);if(d===0)return'hôm nay';if(d===1)return'hôm qua';if(d<7)return d+'d trước';if(d<30)return Math.floor(d/7)+'w trước';return Math.floor(d/30)+'mo trước';}
+function timeAgo(ts){
+  const diff=Date.now()-ts;
+  const m=Math.floor(diff/60000);
+  if(m<1)return'vừa xong';if(m<60)return m+'m trước';
+  const h=Math.floor(m/60);if(h<24)return h+'h trước';
+  const d=Math.floor(h/24);if(d===1)return'hôm qua';
+  if(d<7)return d+'d trước';if(d<30)return Math.floor(d/7)+'w trước';
+  return Math.floor(d/30)+'mo trước';
+}
 function fmtD(ts){return new Date(ts).toLocaleDateString('vi-VN',{day:'2-digit',month:'2-digit',year:'numeric'});}
-function isZom(p){if(['done','dropped'].includes(p.status))return false;if(p.snoozedUntil&&Date.now()<p.snoozedUntil)return false;return(Date.now()-p.updatedAt)>14*864e5;}
+function isZom(p){if(['done','dropped'].includes(p.status))return false;if(p.snoozedUntil&&Date.now()<p.snoozedUntil)return false;const act=p.lastActivityAt||p.updatedAt;return(Date.now()-act)>14*864e5;} // FIX1: use lastActivityAt
 function isSnz(p){return p.snoozedUntil&&Date.now()<p.snoozedUntil;}
 function pct(p){const c=p.checklist||[];return Math.round(c.filter(Boolean).length/CHKS.length*100);}
 function sc(s){const m={idea:'#6b3fa0',spec:'#1a5fa8',building:'#c8440a',testing:'#b07000',done:'#2d7a4f',improving:'#1a5fa8',dropped:'#9a9088'};return m[s]||'#9a9088';}
 function norm(t){return t.toLowerCase().trim();}
 function allTags(){const st=new Set(S.tags);S.projects.forEach(p=>(p.tags||[]).forEach(t=>st.add(t)));return[...st];}
-function touchP(pid){const p=S.projects.find(x=>x.id===pid);if(p)p.updatedAt=Date.now();}
+function touchP(pid){
+  const p=S.projects.find(x=>x.id===pid);
+  if(p){p.updatedAt=Date.now();p.lastActivityAt=Date.now();} // FIX1
+}
+async function touchActivity(pid){ // FIX1: async version — writes last_activity_at to DB
+  touchP(pid);
+  try{await sb.from('projects').update({last_activity_at:new Date().toISOString()}).eq('id',pid);}
+  catch(e){console.warn('[SB] touchActivity failed:',e.message);}
+}
 
 // UNDO STACK
 const US=[];
 function pushU(lbl,fn){US.push({lbl,fn});if(US.length>10)US.shift();}
 function doUndo(){const u=US.pop();if(u){u.fn();bIdx();renderDash();if(S.cpid)renderDet(S.cpid);}}
+
+// SAVE INDICATOR — FIX5
+let _saveTimer=null;
+function setSaveState(state){
+  // state: 'saving' | 'saved' | 'error' | ''
+  const el=document.getElementById('save-indicator');
+  if(!el)return;
+  clearTimeout(_saveTimer);
+  if(state==='saving'){el.className='saving';el.textContent='⏳ Saving...';}
+  else if(state==='saved'){el.className='saved';el.textContent='✓ Saved';_saveTimer=setTimeout(()=>{el.className='';el.textContent='';},2500);}
+  else if(state==='error'){el.className='error';el.textContent='✗ Error';_saveTimer=setTimeout(()=>{el.className='';el.textContent='';},4000);}
+  else{el.className='';el.textContent='';}
+}
 
 // TOAST
 function toast(msg,undoLbl){
@@ -492,13 +660,39 @@ function cSB(){document.getElementById('sidebar').classList.remove('open');docum
 // MODALS
 function oMo(id){document.getElementById(id).classList.add('open');}
 function cMo(id){document.getElementById(id).classList.remove('open');}
-document.querySelectorAll('.mo').forEach(o=>{o.addEventListener('click',e=>{if(e.target===o&&o.id!=='m-cfm')cMo(o.id);});});
+document.querySelectorAll('.mo').forEach(o=>{
+  o.addEventListener('click',e=>{
+    if(e.target!==o||o.id==='m-cfm')return;
+    // Draft guard for project modal — confirm before losing data
+    if(o.id==='m-project'){
+      const hasData=document.getElementById('epname')?.value.trim()||document.getElementById('epdesc')?.value.trim();
+      if(hasData){
+        if(!confirm('Bỏ qua dữ liệu đang nhập?'))return;
+      }
+    }
+    cMo(o.id);
+  });
+});
 
 // TAG SUGGEST
 function updTS(val){const typed=val.split(',').pop().trim().toLowerCase();const used=val.split(',').map(t=>norm(t)).filter(Boolean);const av=allTags().filter(t=>!used.includes(t)&&(typed===''||t.includes(typed)));document.getElementById('tsug').innerHTML=av.slice(0,8).map(t=>`<span class="tsc" onclick="addTS('${t}')">${t}</span>`).join('');}
 function addTS(tag){const inp=document.getElementById('eptags');const parts=inp.value.split(',').map(t=>t.trim()).filter(Boolean);if(!parts.includes(tag))parts.push(tag);inp.value=parts.join(', ')+', ';updTS(inp.value);inp.focus();}
 
 // EXPORT/IMPORT
+// ADD THIS: stable UUID from string (for import ID remapping)
+// Uses a simple but consistent hash — good enough for dev personal data
+function stableUUID(str){
+  // Simple hash → UUID v5-like format (no crypto needed)
+  let h=0;
+  for(let i=0;i<str.length;i++){h=Math.imul(31,h)+str.charCodeAt(i)|0;}
+  const hex=(Math.abs(h)>>>0).toString(16).padStart(8,'0');
+  const h2=str.split('').reduceRight((acc,c)=>Math.imul(17,acc)+c.charCodeAt(0)|0,0);
+  const hex2=(Math.abs(h2)>>>0).toString(16).padStart(8,'0');
+  // prefix 'db' to avoid collisions with other tools — FIX4
+  return`db${hex}-${hex2.slice(0,4)}-5${hex2.slice(4,7)}-a${hex.slice(0,3)}-${hex2}${hex.slice(0,4)}`;
+}
+function needsUUID(id){try{if(id&&id.length===36&&id[8]==='-')return false;}catch(e){}return true;}
+
 function doExport(){const blob=new Blob([JSON.stringify(S,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='devbrain-'+new Date().toISOString().slice(0,10)+'.json';a.click();URL.revokeObjectURL(url);toast('✅ Đã export backup!');}
 function doImport(file){
   if(!file)return;
@@ -518,6 +712,7 @@ function doImport(file){
         sb.from('notes').delete().neq('id','00000000-0000-0000-0000-000000000000'),
         sb.from('improvements').delete().neq('id','00000000-0000-0000-0000-000000000000'),
         sb.from('links').delete().neq('id','00000000-0000-0000-0000-000000000000'),
+        sb.from('spec_items').delete().neq('id','00000000-0000-0000-0000-000000000000'), // ADD
       ]);
       const delErr=dels.find(x=>x.error);
       if(delErr)throw new Error('Xoá data cũ thất bại: '+delErr.error.message);
@@ -527,8 +722,20 @@ function doImport(file){
       // ── Step 2: insert projects ────────────────────────────
       // Map JS camelCase → DB snake_case, bỏ qua id cũ (để DB tự gen uuid mới)
       // Tuy nhiên giữ id cũ để notes/imps/links có thể ref đúng project
-      const projRows=(d.projects||[]).map(p=>({
-        id:           p.id,   // giữ id gốc để FK đúng
+      // MODIFY FIX4: remap non-UUID IDs using stableUUID to avoid DB rejection
+    const _idRemap={};
+    const allRows=[...(d.projects||[]),...(d.notes||[]),...(d.improvements||[]),...(d.links||[]),...(d.specItems||d.spec_items||[])];
+    allRows.forEach(r=>{
+      ['id','projectId','project_id'].forEach(f=>{
+        if(r[f]&&needsUUID(r[f])&&!_idRemap[r[f]]){
+          _idRemap[r[f]]=stableUUID('devbrain-'+r[f]); // 'devbrain-' prefix = FIX4
+        }
+      });
+    });
+    const rid=x=>_idRemap[x]||x;
+
+    const projRows=(d.projects||[]).map(p=>({
+        id:           rid(p.id), // FIX4: remap if not UUID
         name:         p.name,
         description:  p.description||'',
         use_case:     p.useCase||'',
@@ -588,6 +795,20 @@ function doImport(file){
       for(let i=0;i<linkRows.length;i+=BATCH){
         const{error:le}=await sb.from('links').insert(linkRows.slice(i,i+BATCH));
         if(le)throw new Error('Insert links thất bại: '+le.message);
+      }
+
+      // ── Step 5b: insert spec_items ────────────────────────
+      const specRows=(d.specItems||[]).map(s=>({
+        id:s.id,project_id:s.projectId,role:s.role||'user',
+        content:s.content||'',type:s.type||'text',
+        is_selected:!!s.isSelected,note:s.note||'',
+        image_url:s.imageUrl||null,link_url:s.linkUrl||null,
+        user_id:s.userId||CURRENT_USER,
+        created_at:s.createdAt?new Date(s.createdAt).toISOString():new Date().toISOString(),
+      }));
+      for(let i=0;i<specRows.length;i+=BATCH){
+        const{error:se}=await sb.from('spec_items').insert(specRows.slice(i,i+BATCH));
+        if(se)throw new Error('Insert spec_items thất bại: '+se.message);
       }
 
       // ── Step 6: reload từ Supabase (source of truth) ──────
@@ -683,6 +904,7 @@ function renderDet(id){
   const aN=NI[id]||[];
   const imps=S.improvements.filter(i=>i.projectId===id).sort((a,b)=>{const o={high:0,medium:1,low:2};return o[a.priority]-o[b.priority];});
   const links=S.links.filter(l=>l.projectId===id);
+  const specs=S.specItems.filter(s=>s.projectId===id).sort((a,b)=>a.createdAt-b.createdAt);
   const pp=pct(p),chk=p.checklist||Array(CHKS.length).fill(false);
   const zom=isZom(p),snz=isSnz(p);
   const ln=aN[0];const pchk=CHKS.filter((_,i)=>!chk[i]);const tImps=imps.filter(i=>i.status==='todo');const obug=aN.filter(n=>n.type==='bug'&&!n.resolved);
@@ -768,39 +990,40 @@ function renderDet(id){
         }</div>`:''}
       </div>
 
-      <!-- BACKLOG — collapsible, no edit, status dropdown only -->
+      <!-- SPECING — collapsible accordion, replaces Backlog -->
       <div class="panel">
         <div class="ph">
-          <div class="pt">🚀 Backlog <span style="font-size:.68rem;font-weight:400;color:var(--text3)">(${imps.length})</span></div>
+          <div class="pt">📐 Specing
+            ${specs.length?`<span class="spec-count-badge">${specs.filter(s=>s.isSelected).length}/${specs.length} selected</span>`:''}
+          </div>
           <div style="display:flex;align-items:center;gap:6px">
-            <button class="btn bs bsm" onclick="oImpMo('${id}')">+ Add</button>
+            <button class="btn bs bsm" onclick="oSpecMo('${id}')">+ Add</button>
             <button class="collapse-toggle ${iOpen?'open':''}" onclick="PCOL['${id}'].imps=${iOpen?'false':'true'};renderDet('${id}')">
               <i class="collapse-arrow">${iOpen?'▲':'▼'}</i>
             </button>
           </div>
         </div>
-        ${iOpen?`<div class="pb2">${!imps.length
-          ?`<div class="empt" style="padding:14px"><div style="font-size:.78rem">Chưa có improvement</div></div>`
-          :`<div class="il">${imps.map(i=>`<div class="ii ${i.priority==='high'?'ph':i.priority==='medium'?'pm':'pl'}">
-              <div class="pdot ${i.priority==='high'?'pdh':i.priority==='medium'?'pdm':'pdl'}"></div>
-              <div class="ic">${i.content}</div>
-              <select class="isel" onchange="updIS('${i.id}','${id}',this.value)">
-                <option value="todo" ${i.status==='todo'?'selected':''}>todo</option>
-                <option value="doing" ${i.status==='doing'?'selected':''}>doing</option>
-                <option value="done" ${i.status==='done'?'selected':''}>done</option>
-              </select>
-              <button class="dbtn" onclick="askDelImp('${i.id}','${id}')">✕</button>
-            </div>`).join('')}</div>`
-        }</div>`:''}
+        ${iOpen?`<div class="pb2" style="padding-top:10px"><div id="spec-list-${id}">${rSpecItems(specs,id)}</div></div>`:''}
       </div>
 
       <!-- PROGRESS -->
       <div class="panel">
         <div class="ph"><div class="pt">📊 Progress</div></div>
         <div class="pb2">
-          <div class="prgh"><span style="font-size:.75rem;color:var(--text2)">Completion</span><span class="prpct">${pp}%</span></div>
+          <div class="prgh">
+            <span style="font-size:.75rem;color:var(--text2)">Completion</span>
+            <span class="prpct">${pp}%</span>
+          </div>
           <div class="prlg"><div class="prflg" style="width:${pp}%"></div></div>
           <div class="chklist">${CHKS.map((item,i)=>`<div class="chi ${chk[i]?'chkd':''}"><input type="checkbox" id="c${id}${i}" ${chk[i]?'checked':''} onchange="togChk('${id}',${i})"><label for="c${id}${i}">${item}</label></div>`).join('')}</div>
+          ${p.lastSyncedAt?`<div style="margin-top:10px;padding-top:8px;border-top:1px solid var(--border);font-size:.71rem;color:var(--text3);display:flex;align-items:center;gap:5px">
+            <span>🔄</span><span>Last synced: <strong style="color:var(--text2)">${timeAgo(p.lastSyncedAt)}</strong></span>
+            <button class="btn bs bsm" style="margin-left:auto;padding:3px 8px;font-size:.68rem" onclick="markSynced('${id}')">Sync now</button>
+          </div>`:
+          `<div style="margin-top:10px;padding-top:8px;border-top:1px solid var(--border);font-size:.71rem;color:var(--text3);display:flex;align-items:center;justify-content:space-between">
+            <span>🔄 Chưa sync lần nào</span>
+            <button class="btn bs bsm" style="padding:3px 8px;font-size:.68rem" onclick="markSynced('${id}')">Mark synced</button>
+          </div>`}
         </div>
       </div>
 
@@ -816,6 +1039,8 @@ function renderDet(id){
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:.72rem;margin-bottom:${infoFull?'10px':'0'}">
             <div><span style="color:var(--text3)">Created</span><br><span style="font-family:'DM Mono',monospace;font-size:.69rem">${fmtD(p.createdAt)}</span></div>
             <div><span style="color:var(--text3)">Updated</span><br><span style="font-family:'DM Mono',monospace;font-size:.69rem">${fmtD(p.updatedAt)}</span></div>
+            <div><span style="color:var(--text3)">User</span><br><span style="font-family:'DM Mono',monospace;font-size:.69rem">${p.userId||CURRENT_USER}</span></div>
+            <div><span style="color:var(--text3)">App</span><br><span style="font-family:'DM Mono',monospace;font-size:.69rem">${p.appId||APP_ID}</span></div>
           </div>
           ${p.useCase?`<div style="margin-bottom:9px">
             <div style="font-size:.69rem;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px">USE CASE</div>
@@ -955,6 +1180,85 @@ document.addEventListener('keydown',e=>{
 });
 
 // ═══════════════════════════════════════════════════════════════
+// SEED DATA — auto-imported on first load if DB is empty
+// Generated from devbrain-2026-04-01.json
+// DO NOT EDIT manually — re-run migration script to update
+// ═══════════════════════════════════════════════════════════════
+
+// ADD THIS
+const SEED_DATA = {"projects":[{"id":"ff79740c-f04c-4342-b670-7e0966767392","name":"KHO NHẠC KARAOKE","description":"Lưu lại các bài mày thích / hát được","use_case":"Lưu lại các bài mày thích / hát được\nKhi đi karaoke → mở ra là có ngay list\nKhông cần nhớ, không cần lục YouTube loạn xạ","status":"done","tags":["web","ai","supabase","pwa","music"],"keywords":"web, ai, supabase, pwa, music","checklist":[true,true,true,true,true],"snoozed_until":null,"created_at":"2026-03-29T09:31:31.551000+00:00","updated_at":"2026-04-01T03:48:07.933000+00:00","last_activity_at":"2026-04-01T03:48:07.933000+00:00","user_id":"RongLeo","app_id":"devbrain"},{"id":"60a8dfe2-025a-4015-adb7-77169fe36b24","name":"RongLeo_Danh_ba","description":"Quản lý Mối quan hệ xung quanh","use_case":"📇 Danh Bạ Cá Nhân V5 — README\n🎯 Mục tiêu\n\nWeb app quản lý danh bạ cá nhân:\n\n1 file duy nhất (index.html)\nKhông build, không npm\nSync đa thiết bị (Supabase)\nDùng ngay, mở là chạy\n🚀 Cách chạy (2 phút)\n1. Tạo Supabase project\nVào: https://supabase.com\nCreate project\n2. Tạo table\n\nVào SQL Editor, paste đoạn SQL trong cuối file (Claude đã để sẵn)\n\n👉 Bấm Run\n\n3. Lấy API key\n\nVào:\n\nSettings → API\n\nCopy:\n\nProject URL\nanon public key\n4. Dán vào file\n\nTìm 2 dòng:\n\nconst SUPABASE_URL = \"YOUR_SUPABASE_URL\"\nconst SUPABASE_KEY = \"YOUR_SUPABASE_ANON_KEY\"\n\n👉 thay bằng của mày\n\n5. Chạy\n\nChỉ cần:\n\ndouble click index.html\n\n👉 xong, dùng luôn\n\n🧠 Kiến trúc\n🔐 Isolation (bắt buộc)\nconst USER_ID = \"RongLeo\"\nconst APP_ID  = \"danh_ba\"\n\nMọi query đều:\n\n.eq(\"id_user\", USER_ID)\n.eq(\"id_app\", APP_ID)\n\n👉 Không bao giờ lẫn data app khác\n\n🗄️ Database\n\n1 table duy nhất: contacts\n\nphones → jsonb\nemails → jsonb\nsocials → jsonb\nspecs → jsonb\nlists → jsonb\n\n👉 Không join, không phức tạp\n\n🔄 Sync\nLoad: Supabase\nFail → localStorage\nKhi tab active lại → auto reload\nwindow.addEventListener(\"focus\", reloadData)\n💾 Save\n1. upsert Supabase\n2. save localStorage (backup)\n📱 Tính năng chính\n👤 Contact model\n\nMột người có thể có:\n\nnhiều số điện thoại\nnhiều email\nnhiều social (Zalo, FB, Telegram)\nnhiều chuyên môn\nnhiều list\n✏️ Form\nDynamic add/remove\nTag style (Enter để thêm)\nDropdown + tạo mới\n🔍 Tìm kiếm & lọc\ntheo tên / SĐT / org\ntheo chuyên môn\ntheo list\ntheo mức độ quan hệ\n📥 Import\n\nHỗ trợ:\n\nJSON\nCSV\nVCF (vCard)\nLogic:\nDedup: name + phone\nMode:\nSkip\nOverwrite\n📤 Export\nJSON\nfull backup\ngiữ nguyên structure\nCSV\nflatten data\nmở Excel được\nVCF (quan trọng)\nmultiple phone\nmultiple email\nsocial → URL\n\n👉 import vào iPhone / Android OK\n\n⚠️ Lưu ý quan trọng\n❌ Không có push trực tiếp vào danh bạ điện thoại\n\n👉 Cách đúng:\n\nExport .vcf\nMở trên điện thoại\nImport\n⚠️ Không dùng realtime\nkhông websocket\nkhông channel\n\n👉 chỉ pull-on-focus\n\n⚠️ Data safety\nluôn filter id_user + id_app\nkhông overwrite nhầm\n🧪 Debug nhanh\nKhông thấy data?\n\n👉 check:\n\nđã dán đúng API chưa\nđã tạo table chưa\nSync không chạy?\n\n👉 thử:\n\nreload tab\nchuyển tab rồi quay lại\nImport lỗi?\n\n👉 kiểm tra:\n\nfile encoding UTF-8\nCSV delimiter (, hoặc ;)\n📦 Deploy\nCách đơn giản:\nupload file lên:\nVercel\nNetlify\nGitHub Pages\n\n👉 chạy như web bình thường\n\n🐉 Triết lý app này\nKhông framework\nKhông over-engineer\n1 file duy nhất\nData là trung tâm\nSync nhẹ, đủ dùng\n🔮 Hướng nâng cấp (nếu thích)\nnhắc lịch follow-up\ntag AI gợi ý quan hệ\nauto enrich contact (email → info)","status":"done","tags":["web","danh ba","supabase"],"keywords":"web, danh ba, supabase","checklist":[true,true,true,true,true],"snoozed_until":null,"created_at":"2026-03-31T10:35:07.602000+00:00","updated_at":"2026-04-01T03:47:50.386000+00:00","last_activity_at":"2026-04-01T03:47:50.386000+00:00","user_id":"RongLeo","app_id":"devbrain"},{"id":"4bb0590a-8931-439a-b468-272034afea61","name":"RongLeo_Portal","description":"Dùng làm quản lý tổng các web app rời rạc","use_case":"","status":"building","tags":["web"],"keywords":"","checklist":[true,true,true,true,true],"snoozed_until":null,"created_at":"2026-03-27T08:39:41.333000+00:00","updated_at":"2026-04-01T02:00:10.361000+00:00","last_activity_at":"2026-04-01T02:00:10.361000+00:00","user_id":"RongLeo","app_id":"devbrain"},{"id":"c53555b0-4d5e-411b-a9c4-73568f7471e0","name":"Offline_Code","description":"1 trang web app quản lý việc code offline và AI để check lỗi cuối","use_case":"","status":"idea","tags":["web","ai","offline","code"],"keywords":"web, ai, offline, code","checklist":[false,false,false,false,false],"snoozed_until":null,"created_at":"2026-03-31T02:55:05.582000+00:00","updated_at":"2026-03-31T02:55:04.524000+00:00","last_activity_at":"2026-03-31T02:55:04.524000+00:00","user_id":"RongLeo","app_id":"devbrain"},{"id":"b663d9a3-367a-4942-a836-bf0053c4e3db","name":"ADMIN_SUPABASE","description":"Quản lý Dữ liệu SupaBase (ID_app; ID_user)","use_case":"🧠 Admin_SupaBase\n\nAdmin panel cá nhân cho Supabase — quản lý multi-app, user và mapping tập trung.\n\n🎯 Mục tiêu\n\nAdmin_SupaBase là công cụ nội bộ giúp:\n\nQuản lý nhiều web app trong 1 Supabase project\nQuản lý user (identity layer)\nMap user ↔ app (multi-tenant foundation)\nSync realtime giữa các thiết bị\nBackup / restore dữ liệu dễ dàng\n\n👉 Dùng làm “control panel” cho toàn bộ hệ sinh thái app cá nhân.\n\n🚀 Tính năng chính\n🧩 1. App Management\nTạo / sửa / xoá app\nTrạng thái: active / inactive\nThêm mô tả (description)\n👤 2. User Management\nTạo user bằng username\nThêm name + note\nHiển thị app đã được gán\n🔗 3. Mapping (App ↔ User)\nGán user vào app\nHiển thị theo tên (không còn UUID khó đọc)\nBadge “tôi” cho user hiện tại\n🔐 4. Login System (Lightweight)\nĐăng nhập bằng username (vd: rongleo)\nTự tạo user nếu chưa tồn tại\nĐồng bộ user_id giữa các thiết bị\n🔄 5. Realtime Sync\nSupabase realtime\nTự cập nhật khi có thay đổi\nSync giữa điện thoại ↔ máy tính\n📱 6. Mobile Support\nResponsive UI\nCard view cho mobile\nTable view cho desktop\n📤📥 7. Backup / Restore\nExport JSON toàn bộ dữ liệu:\napps\nusers\nmappings\nImport JSON để restore\nCó timestamp file\n🧠 8. UX nâng cao\nInline edit (giống Excel)\nSearch + filter\nDetail panel (xem quan hệ)\nHighlight user hiện tại\n🧱 Kiến trúc\n\nApp viết bằng HTML + JS thuần, không framework.\n\n5 layer chính:\nSTATE     — quản lý state toàn cục\nDATA      — gọi Supabase\nRENDER    — render UI\nEVENTS    — event delegation\nINIT      — bootstrap app\n\n👉 Dễ debug, không phụ thuộc framework.\n\n🗄️ Database Schema\napps\nid uuid (PK)\nname text\nslug text (unique)\ndescription text\nstatus text\ncreated_at\nusers\nid uuid (PK)\nname text (unique)\nnote text\ncreated_at\napp_users\nid uuid (PK)\nuser_id uuid (FK)\napp_id uuid (FK)\ncreated_at\nUNIQUE(user_id, app_id)\n⚙️ Setup\n1. Supabase\nTạo project\nVào SQL Editor\nChạy file supabase_setup.sql\n2. Deploy\nUpload lên Vercel (drag & drop)\nHoặc host static\n3. Kết nối\n\nMở app → nhập:\n\nProject URL\nAnon Key\n4. Login\n\nNhập username:\n\nrongleo\n\n👉 dùng cùng username trên mọi thiết bị để sync\n\n📱 Sync đa thiết bị\n\nĐiều kiện để sync:\n\ndùng cùng Supabase project\nlogin cùng username\n\n👉 đảm bảo cùng user_id\n\n📦 Backup dữ liệu\nExport\nClick “Export JSON”\nFile dạng:\nadmin-supabase-2026-03-31T14-22-05.json\nImport\nClick “Import JSON”\nChọn file backup\nConfirm overwrite\n⚠️ Lưu ý quan trọng\n1. ID vs Name\nID = cho hệ thống\nName = cho con người\n\n👉 luôn hiển thị name trong UI\n\n2. Schema update\n\nSau khi ALTER TABLE:\n\nNOTIFY pgrst, 'reload schema';\n3. Login\nUsername phải unique\nKhông nên đổi name sau khi tạo\n🧠 Roadmap (gợi ý nâng cấp)\n Project ↔ App mapping (DevBrain integration)\n Activity log\n Feature flags\n Version app\n Role-based access (nếu nhiều user)\n🎯 Mục đích dài hạn\n\nAdmin_SupaBase không chỉ là tool, mà là:\n\n🧠 Core control panel cho toàn bộ hệ sinh thái app cá nhân\n\n👨‍💻 Tác giả\n\nRongLeo — build để quản lý chính hệ thống của mình.\n\n🚀 Triết lý\n\nKhông build app → build hệ thống để build app","status":"testing","tags":["web","ai","supabase"],"keywords":"web, ai, supabase","checklist":[true,true,true,true,true],"snoozed_until":null,"created_at":"2026-03-30T10:27:06.963000+00:00","updated_at":"2026-03-31T00:05:04.596000+00:00","last_activity_at":"2026-03-31T00:05:04.596000+00:00","user_id":"RongLeo","app_id":"devbrain"},{"id":"b2846372-df77-4e82-839f-ccfa56dad096","name":"App_Factory","description":"Khống chế luồn dựng web app thành 1 khung chuẩn","use_case":"🧱 APP FACTORY — TỔNG HỢP V1 vs V2\n🟢 V1 — “Single App Builder”\n\n👉 Bản đầu, đơn giản, tập trung vào 1 app duy nhất\n\n🔧 Core chức năng\n\n1. Project system\n\nTạo project\nRename / delete\nDuplicate\nTemplate (is_template)\n\n2. Pipeline (8 bước AI)\n\nidea → spec → claude_review → gpt_fix → \nclaude_code → gpt_review_code → final_check → deploy\nMỗi bước:\ncontent (text)\nversions (history JSON)\nAuto lưu Supabase\n\n3. Sync đa thiết bị\n\nSupabase backend\nlogin:\nGoogle OAuth\nMagic link\n→ laptop ↔ điện thoại sync real-time-ish\n\n4. Local fallback\n\nNếu chưa login → lưu localStorage\n\n5. Share\n\nshare_token\npublic project (read-only)\n\n6. Export / Import\n\nexport JSON\nimport lại project\n\n7. UI\n\nDashboard\nProject list\nPipeline editor\nStepBlock editor\n🧠 Tóm lại V1\n\n👉 Là:\n\n“Notion + AI pipeline cho 1 app”\n\n🟣 V2 — “Multi-App System”\n\n👉 nâng cấp quan trọng nhất: quản lý nhiều app\n\n🚀 Thêm mới\n🔥 1. App Registry\n\nTable mới: apps\n\nid\nname\nslug\nuser_id\n🔥 2. Project thuộc App\n\nprojects thêm:\n\napp_id uuid\n🔥 3. UI mới\n\n/apps\n\ntạo app\nlist app\ndelete app\n\n/apps/[id]\n\nxem project thuộc app\n🔥 4. AppSelector\nkhi tạo project:\nchọn app\nfilter dashboard theo app\n🔥 5. Dashboard upgrade\nfilter theo app\nproject hiển thị theo app\ngrouping logic\n🧠 Tóm lại V2\n\n👉 Là:\n\n“Workspace kiểu Notion + mỗi workspace là 1 app”","status":"dropped","tags":["web","ai","supabase","pwa"],"keywords":"web, ai, supabase, pwa","checklist":[false,false,false,false,false],"snoozed_until":null,"created_at":"2026-03-29T03:20:32.606000+00:00","updated_at":"2026-03-30T22:23:18.995000+00:00","last_activity_at":"2026-03-30T22:23:18.995000+00:00","user_id":"RongLeo","app_id":"devbrain"},{"id":"ae75d7ac-234e-4aa0-916b-a2b0005defa2","name":"Note_Brain","description":"Ghi chú lại các kiến thức cần note","use_case":"- Có ý nào hay cần note lại thì dùng\n- Có AI tóm ý\n- Có chế độ lọc lại bằng AI (chưa test)\n- Có lưu trữ synce nhiều hệ máy","status":"testing","tags":["web","ai","firebase"],"keywords":"web, ai, firebase","checklist":[true,true,true,true,true],"snoozed_until":null,"created_at":"2026-03-27T01:03:48.786000+00:00","updated_at":"2026-03-29T03:45:36.895000+00:00","last_activity_at":"2026-03-29T03:45:36.895000+00:00","user_id":"RongLeo","app_id":"devbrain"},{"id":"51082a43-075d-4b5b-86a0-722494ff284a","name":"Web app tạo Dashboard","description":"Xây dựng 1 web app có thể tạo các Dashboard như Notion, Canva","use_case":"","status":"spec","tags":["web","ai","supabase","dashboard"],"keywords":"web, ai, supabase, dashboard","checklist":[false,false,false,false,false],"snoozed_until":null,"created_at":"2026-03-29T02:43:35.303000+00:00","updated_at":"2026-03-29T02:45:52.368000+00:00","last_activity_at":"2026-03-29T02:45:52.368000+00:00","user_id":"RongLeo","app_id":"devbrain"},{"id":"ade00721-8c8f-4222-a2f3-862843e2406d","name":"Cây gia phả","description":"Làm cây gia phả của gia đình","use_case":"","status":"spec","tags":["web","ai","api","gia phả","supabase"],"keywords":"web, ai, history, learn, supabase","checklist":[false,false,false,false,false],"snoozed_until":null,"created_at":"2026-03-29T01:04:29.954000+00:00","updated_at":"2026-03-29T02:17:03.114000+00:00","last_activity_at":"2026-03-29T02:17:03.114000+00:00","user_id":"RongLeo","app_id":"devbrain"},{"id":"c83c802e-521f-4717-a4fb-20b23b631db0","name":"Habit_Tracker","description":"Quản lý Thói quen","use_case":"Tính năng\n🏠 Tổng quan (Dashboard)\n\nHiển thị tất cả thói quen đang theo dõi\nSố lần thực hiện hôm nay so với hôm qua (↑ tăng / ↓ giảm / = giữ nguyên)\nNút +1 ghi log nhanh trong một nhấn\nNút + Khác để nhập số lượng tuỳ chỉnh kèm ghi chú (vd: \"sau bữa sáng\", \"do stress\")\nMini chart 7 ngày hiển thị xu hướng theo tuần\nLời động viên xuất hiện mỗi ngày, chọn ngẫu nhiên phù hợp với xu hướng\n\n📋 Nhật ký (Log List)\n\nDanh sách tất cả lần ghi trong ngày, sắp xếp theo giờ\nHiển thị số lượng, đơn vị, tên thói quen và ghi chú\nLọc nhanh theo thói quen\nXoá từng log nếu nhập nhầm\n\n✨ Lời động viên\n\n104 câu chia 3 nhóm tương ứng với xu hướng ngày:\n\n🟢 Cải thiện (35 câu) — khi hôm nay ít hơn hôm qua\n🔵 Giữ nguyên (34 câu) — khi bằng hôm qua\n🔴 Tăng thêm (35 câu) — khi hôm nay nhiều hơn hôm qua\n\n\nCRUD đầy đủ: thêm, sửa, xoá từng câu\nNhóm hiển thị theo loại để dễ quản lý\n\n⚙️ Cài đặt\n\nThêm / xoá thói quen — tên và đơn vị tuỳ chỉnh (điếu, ly, lần...)\nXuất dữ liệu ra file .json để backup hoặc chuyển thiết bị\nNhập dữ liệu từ file .json với hai chế độ:\n\n🔁 Ghi đè — xoá toàn bộ và thay bằng dữ liệu mới\n➕ Gộp — giữ dữ liệu cũ, thêm dữ liệu mới (không trùng ID)\nKéo & thả file trực tiếp vào vùng import\nXem trước số lượng habits / logs / messages trước khi xác nhận","status":"testing","tags":["web","habit"],"keywords":"web, habit","checklist":[true,true,true,true,false],"snoozed_until":null,"created_at":"2026-03-27T06:22:05.141000+00:00","updated_at":"2026-03-28T23:26:24.830000+00:00","last_activity_at":"2026-03-28T23:26:24.830000+00:00","user_id":"RongLeo","app_id":"devbrain"},{"id":"5dfd06af-cd8a-458c-8c74-45655f523984","name":"Tu_Vi","description":"Tính tử vi, bát tự","use_case":"- Dựa trên những gì đã làm trong Numerology_v2 và File tham khảo từ mạng, xây dựng lại 1 hệ tính của riêng mình để mình sử dụng","status":"spec","tags":["web","ai","tu_vi"],"keywords":"web, ai, tu_vi","checklist":[true,false,false,false,false],"snoozed_until":null,"created_at":"2026-03-27T05:48:01.820000+00:00","updated_at":"2026-03-28T23:23:24.529000+00:00","last_activity_at":"2026-03-28T23:23:24.529000+00:00","user_id":"RongLeo","app_id":"devbrain"},{"id":"94d33df5-8379-45b6-af74-3fe248cfb936","name":"Watch_History","description":"Xem và học Lịch sử Thế giới và Viẹt Nam","use_case":"","status":"spec","tags":["web","ai","history","learn","supabase"],"keywords":"web, ai, history, learn, supabase","checklist":[true,false,false,false,false],"snoozed_until":null,"created_at":"2026-03-28T23:10:21.194000+00:00","updated_at":"2026-03-28T23:19:28.562000+00:00","last_activity_at":"2026-03-28T23:19:28.562000+00:00","user_id":"RongLeo","app_id":"devbrain"},{"id":"84527166-6790-5545-b5a6-0a26cfe9a7c1","name":"DevBrain","description":"Quản lý quá trình triển khai toàn bộ hệ Dev Web app và các app","use_case":"🧠 DevBrain – Core Features\n1. Dashboard tổng quan\nXem toàn bộ project theo trạng thái\nThống kê nhanh: Active, Done, Zombie\nTìm kiếm full-text theo tên, tag, keywords\nFilter theo status và tag\n2. Project Management\nTạo / sửa / xoá project\nGắn tag, keyword, use case\nChecklist tiến độ\nTracking trạng thái: idea → building → testing → done → improving → dropped\nAuto update updated_at\n3. Zombie Detection 🧟\nHighlight project lâu không đụng tới (+14 ngày)\nGợi ý hành động:\nContinue\nSnooze\nDrop\n4. Dev Log (Notes system)\nGhi log theo timeline\nCác loại note:\nIdea\nTodo\nBug\nLog\nDecision\nToggle todo done / resolved\nFilter theo loại\n5. Backlog / Improvements\nQuản lý improvement theo priority:\nHigh / Medium / Low\nDrag & drop hoặc update status:\ntodo / doing / done\n6. Link Hub\nLưu link liên quan:\nrepo\ndemo\ndocs\nstaging\nTập trung 1 chỗ, không cần nhớ\n7. Data & Sync\nBackend: Supabase (Postgres)\nReal-time sync đa thiết bị\nOptimistic UI (update ngay, sync sau)\n8. Import / Export\nExport JSON backup\nImport lại toàn bộ data\nDùng để migrate hoặc backup cá nhân\n9. UX / Productivity\nDark / Light mode\nMobile + Desktop responsive\nFAB quick actions\nKeyboard shortcuts (Esc, Enter, etc.)\n10. Philosophy\nKhông phải Jira. Không phải Notion.\nĐây là “bộ nhớ ngoài” cho dev – nhanh, nhẹ, không overhead.","status":"testing","tags":["web","dev","brain","supabase"],"keywords":"web, brain, supabase","checklist":[true,true,true,true,true],"snoozed_until":null,"created_at":"2026-03-26T15:16:30.182000+00:00","updated_at":"2026-03-28T03:10:35.087000+00:00","last_activity_at":"2026-03-28T03:10:35.087000+00:00","user_id":"RongLeo","app_id":"devbrain"},{"id":"9e7e9068-b660-4b23-a221-603b57f86749","name":"Lưu Kiến Thức","description":"Các lời hay, ý đẹp, bài học, AI quản lý","use_case":"","status":"building","tags":["web","ai","supabase"],"keywords":"web, ai, supabase","checklist":[true,false,false,false,false],"snoozed_until":null,"created_at":"2026-03-27T08:08:14.008000+00:00","updated_at":"2026-03-27T08:34:13.996000+00:00","last_activity_at":"2026-03-27T08:34:13.996000+00:00","user_id":"RongLeo","app_id":"devbrain"},{"id":"a153a0ee-c219-4500-94c2-8fbd4be9b0cc","name":"RồngLeo_Play_with_Kids","description":"App Android Chú rồng trò chuyện với em nhỏ","use_case":"🐲 RồngLeo — Tổng quan tính năng\n\nRồngLeo là một ứng dụng tương tác dành cho trẻ nhỏ, tập trung vào giao tiếp bằng giọng nói, kể chuyện và học qua hội thoại. Hệ thống được thiết kế theo hướng ổn định, kiểm soát nội dung chặt chẽ, phù hợp với trẻ từ 4–10 tuổi.\n\n🎤 Hệ thống giọng nói (Voice System)\n\nỨng dụng sử dụng Text-to-Speech tiếng Việt với giọng đọc tự nhiên, có biến đổi nhẹ về tốc độ và cao độ để tạo cảm giác sinh động, tránh nhàm chán khi nghe lặp lại.\n\nTrẻ có thể nói trực tiếp qua micro, hệ thống nhận diện giọng nói bằng tiếng Việt (vi-VN) để tương tác hai chiều.\n\nToàn bộ luồng giọng nói được điều phối qua một lớp trung gian (VoiceOrchestrator), giúp xử lý mượt các tình huống như chuyển chế độ, ngắt lời, hoặc chuẩn bị cho cơ chế queue sau này.\n\nNgoài ra, ứng dụng có khả năng thay đổi callback theo từng chế độ (chat hoặc kể chuyện), đảm bảo phản hồi đúng ngữ cảnh. Trong lúc chờ phản hồi, hệ thống có thể nói các câu “đệm” ngẫu nhiên để giữ trải nghiệm tự nhiên.\n\n🧠 Hệ thống hội thoại (AI Chat)\n\nRồngLeo tích hợp AI để trò chuyện với trẻ, sử dụng mô hình llama-3.1-8b-instant thông qua Groq API.\n\nHệ thống có khả năng nhận diện chủ đề hội thoại như động vật, màu sắc, trường học, đồ ăn… và từ đó tạo ra các câu hỏi tiếp theo nhằm duy trì cuộc trò chuyện.\n\nTrong một số trường hợp, ứng dụng sẽ chủ động hỏi thêm để kéo dài tương tác một cách tự nhiên.\n\nCác phản hồi đều được xử lý lại trước khi gửi tới trẻ: điều chỉnh giọng điệu thân thiện, chèn tên bé để cá nhân hóa, và kiểm tra nội dung nhằm đảm bảo phù hợp.\n\nNgoài ra, một số phản hồi như tiếng kêu động vật được xử lý offline để tăng tốc độ và giảm phụ thuộc vào AI. Hệ thống cũng có cơ chế retry khi gặp giới hạn từ API.\n\n📚 Hệ thống kể chuyện (Story Engine — Offline)\n\nỨng dụng có sẵn kho truyện cổ tích lưu dưới dạng JSON, được load từ local nên không cần internet.\n\nTrẻ có thể chọn truyện từ danh sách hoặc kích hoạt bằng giọng nói (ví dụ: “kể chuyện”), hệ thống sẽ tự động chọn và mở trình phát.\n\nMỗi câu chuyện được đọc từng câu một bằng TTS, và tự động chuyển sang câu tiếp theo khi đọc xong, tạo trải nghiệm liền mạch.\n\nDữ liệu truyện được cache sau lần load đầu tiên để tối ưu hiệu năng.\n\n🎮 Giao diện & trải nghiệm (UI/UX)\n\nỨng dụng cho phép lưu thông tin cơ bản của bé như tên và tuổi để cá nhân hóa trải nghiệm.\n\nMàn hình chat được thiết kế dạng bong bóng hội thoại, tự động cuộn xuống nội dung mới nhất.\n\nCó sẵn bộ câu hỏi mở đầu được xáo trộn để tránh lặp lại, giúp trẻ dễ bắt đầu cuộc trò chuyện.\n\nNgười dùng có thể reset toàn bộ cuộc hội thoại để quay về trạng thái ban đầu bất cứ lúc nào.\n\nHệ thống điều hướng gồm 3 màn hình chính: chat, danh sách truyện và trình phát truyện, đảm bảo đơn giản và dễ sử dụng cho trẻ nhỏ.","status":"done","tags":["app","mobile","ai","firebase"],"keywords":"app, mobile, ai, firebase","checklist":[true,true,true,true,true],"snoozed_until":null,"created_at":"2026-03-27T00:52:41.654000+00:00","updated_at":"2026-03-27T07:46:53.499000+00:00","last_activity_at":"2026-03-27T07:46:53.499000+00:00","user_id":"RongLeo","app_id":"devbrain"},{"id":"abb4b0cd-0007-4844-b2be-d03f60200f80","name":"QL_Tai_Chinh","description":"Quản lý tài chính của cá nhân","use_case":"- Từ file google sheet dữ liệu dựng WebApp để dễ nhập và tính","status":"idea","tags":["web","final"],"keywords":"web, final","checklist":[false,false,false,false,false],"snoozed_until":null,"created_at":"2026-03-27T05:36:04.006000+00:00","updated_at":"2026-03-27T05:43:52.048000+00:00","last_activity_at":"2026-03-27T05:43:52.048000+00:00","user_id":"RongLeo","app_id":"devbrain"},{"id":"324474c5-c2b1-4b7e-9b5b-a621870d43f7","name":"Read_For_You (TTS)","description":"Đọc tin dài","use_case":"- Đọc thành tiếng các văn bản\n- Không giới hạn ký tự\n- Chạy dưới nền (chưa)","status":"done","tags":["web","tts","word"],"keywords":"web, TTS, word","checklist":[true,true,true,true,true],"snoozed_until":null,"created_at":"2026-03-27T01:08:46.108000+00:00","updated_at":"2026-03-27T01:47:51.370000+00:00","last_activity_at":"2026-03-27T01:47:51.370000+00:00","user_id":"RongLeo","app_id":"devbrain"}],"notes":[{"id":"e3a21750-b630-4041-baf3-c91311280d2e","project_id":"ff79740c-f04c-4342-b670-7e0966767392","content":"20260401_Lỗi ko synce dữ liệu mà phải push and pull. kéo về thì nhân dữ liệu lên dù đã có","type":"bug","resolved":false,"is_todo":true,"is_done":true,"created_at":"2026-04-01T02:01:11.014000+00:00","updated_at":"2026-04-01T03:39:42.052000+00:00","user_id":"RongLeo"},{"id":"bbed1d44-b786-4459-bc32-e61351acb8ef","project_id":"ff79740c-f04c-4342-b670-7e0966767392","content":"20260401_Lỗi ID_app và ID_User bị ngược","type":"log","resolved":false,"is_todo":true,"is_done":true,"created_at":"2026-04-01T02:00:26.698000+00:00","updated_at":"2026-04-01T02:00:28.234000+00:00","user_id":"RongLeo"},{"id":"14d7a174-3f34-4e0f-ac07-338798e2c835","project_id":"60a8dfe2-025a-4015-adb7-77169fe36b24","content":"20260401_Lỗi ID_app và ID_User bị ngược","type":"log","resolved":false,"is_todo":true,"is_done":true,"created_at":"2026-04-01T02:00:17.400000+00:00","updated_at":"2026-04-01T03:47:31.150000+00:00","user_id":"RongLeo"},{"id":"297aca05-418c-4d2d-869a-97d0992cfa2c","project_id":"4bb0590a-8931-439a-b468-272034afea61","content":"20260401_Lỗi ID_app và ID_User bị ngược","type":"log","resolved":false,"is_todo":true,"is_done":false,"created_at":"2026-04-01T02:00:10.361000+00:00","updated_at":null,"user_id":"RongLeo"},{"id":"5db8569c-29b5-44a2-a1ae-48f5fba50cfe","project_id":"ff79740c-f04c-4342-b670-7e0966767392","content":"20260401_Để bản cũ nằm đó, làm bản mới bằng html","type":"decision","resolved":false,"is_todo":true,"is_done":false,"created_at":"2026-03-31T11:16:20.012000+00:00","updated_at":"2026-03-31T11:16:20.012000+00:00","user_id":"RongLeo"},{"id":"960452f1-2a61-431d-8bdd-a76b8eb22c29","project_id":"60a8dfe2-025a-4015-adb7-77169fe36b24","content":"20260401_Testing 1 thời gian","type":"log","resolved":false,"is_todo":true,"is_done":true,"created_at":"2026-03-31T10:35:33.781000+00:00","updated_at":"2026-04-01T03:47:31.981000+00:00","user_id":"RongLeo"},{"id":"cb6ec078-beea-43fa-9d79-0019d64207a9","project_id":"4bb0590a-8931-439a-b468-272034afea61","content":"20260331_Đã synce từ máy tính qua điện thoại","type":"log","resolved":false,"is_todo":true,"is_done":true,"created_at":"2026-03-31T09:52:18.776000+00:00","updated_at":"2026-03-31T09:52:19.671000+00:00","user_id":"RongLeo"},{"id":"a4013baa-3fb0-4231-b727-bcb1a66f5f78","project_id":"4bb0590a-8931-439a-b468-272034afea61","content":"20260331_Mất thời gian cho Dựng cả 1 cái to đùng. Dẹp hết. Làm 1 html đơn giản luôn","type":"decision","resolved":false,"is_todo":false,"is_done":false,"created_at":"2026-03-31T09:45:11.099000+00:00","updated_at":"2026-03-31T09:45:11.099000+00:00","user_id":"RongLeo"},{"id":"f578856a-f58c-4706-938f-8e28eb979f85","project_id":"ff79740c-f04c-4342-b670-7e0966767392","content":"20260331_AI chưa chạy","type":"log","resolved":false,"is_todo":true,"is_done":true,"created_at":"2026-03-31T03:38:04.312000+00:00","updated_at":"2026-03-31T11:16:23.378000+00:00","user_id":"RongLeo"},{"id":"cb6cbb1b-63e9-4744-ad2e-0c9830fe84ef","project_id":"ff79740c-f04c-4342-b670-7e0966767392","content":"20260331_Chưa sync điện thoại. Chắc phải login => Login bằng mail","type":"log","resolved":false,"is_todo":true,"is_done":true,"created_at":"2026-03-31T03:37:50.007000+00:00","updated_at":"2026-03-31T11:16:24.200000+00:00","user_id":"RongLeo"},{"id":"c2735b40-447f-4be3-ba1f-9e58b13e8245","project_id":"ff79740c-f04c-4342-b670-7e0966767392","content":"20260331_Deploy Vercel","type":"log","resolved":false,"is_todo":true,"is_done":true,"created_at":"2026-03-31T02:02:01.274000+00:00","updated_at":"2026-03-31T06:36:56.260000+00:00","user_id":"RongLeo"},{"id":"f8c32757-c31d-4d09-8283-4f3d33daa9e6","project_id":"ff79740c-f04c-4342-b670-7e0966767392","content":"20260331_Claude CODE lại","type":"log","resolved":false,"is_todo":true,"is_done":true,"created_at":"2026-03-31T02:01:48.428000+00:00","updated_at":"2026-03-31T03:35:30.126000+00:00","user_id":"RongLeo"},{"id":"b45f6b57-2f84-4415-9608-befaf924ff19","project_id":"ff79740c-f04c-4342-b670-7e0966767392","content":"20260331_Đã cập nhật admin_supabase cho 1 project dùng nhiều app","type":"log","resolved":false,"is_todo":true,"is_done":true,"created_at":"2026-03-31T02:01:28.968000+00:00","updated_at":"2026-03-31T02:01:29.934000+00:00","user_id":"RongLeo"},{"id":"41e4dc87-fe93-402a-8ed5-d002d1c8bca9","project_id":"b663d9a3-367a-4942-a836-bf0053c4e3db","content":"20260331_Thêm export, import dữ liệu ra file Json","type":"log","resolved":false,"is_todo":true,"is_done":true,"created_at":"2026-03-30T22:58:52.818000+00:00","updated_at":"2026-03-30T23:38:00.430000+00:00","user_id":"RongLeo"},{"id":"1e590c30-4bd4-4073-8137-3a903480a9fe","project_id":"b663d9a3-367a-4942-a836-bf0053c4e3db","content":"20260331_Chạy ổn thì chuyển dữ liệu qua dạng khác lớn hơn htlm hiện tại","type":"log","resolved":false,"is_todo":true,"is_done":false,"created_at":"2026-03-30T22:58:24.129000+00:00","updated_at":"2026-03-30T22:58:24.129000+00:00","user_id":"RongLeo"},{"id":"a1908065-60a1-4d86-bdc8-906b04e4a918","project_id":"b663d9a3-367a-4942-a836-bf0053c4e3db","content":"20260331_Điện thoại dùng theo dạng Card","type":"log","resolved":false,"is_todo":true,"is_done":true,"created_at":"2026-03-30T22:57:52.651000+00:00","updated_at":"2026-03-31T00:05:09.255000+00:00","user_id":"RongLeo"},{"id":"ea64a3d2-9edc-4b68-aa22-ca6ef3d4e14a","project_id":"b663d9a3-367a-4942-a836-bf0053c4e3db","content":"20260331_Hỏi ChatGPT xem nên thêm AI vào để search sau này ko? => Lớn hơn 10 app thì quay lại thêm sau","type":"log","resolved":false,"is_todo":true,"is_done":false,"created_at":"2026-03-30T22:27:21.116000+00:00","updated_at":"2026-03-30T22:59:18.395000+00:00","user_id":"RongLeo"},{"id":"6c0cf749-4544-4ef8-a2ac-79e1c479494e","project_id":"b663d9a3-367a-4942-a836-bf0053c4e3db","content":"20260331_Quay lại ChatGPT thêm các ý này: “review DevBrain v0.1 + nâng cấp UI bảng cho dễ dùng”\nTao sẽ giúp mày:\nlàm table xịn hơn (gần Excel thật)\nfilter / search\nUX đỡ “thô”","type":"log","resolved":false,"is_todo":true,"is_done":true,"created_at":"2026-03-30T22:26:58.345000+00:00","updated_at":"2026-03-30T22:59:03.172000+00:00","user_id":"RongLeo"},{"id":"3f593c17-ee33-4251-a60d-45fade8b13a8","project_id":"b663d9a3-367a-4942-a836-bf0053c4e3db","content":"20260331_Deploy lên Vercel và testing","type":"log","resolved":false,"is_todo":true,"is_done":true,"created_at":"2026-03-30T22:26:17.210000+00:00","updated_at":"2026-03-30T22:50:06.171000+00:00","user_id":"RongLeo"},{"id":"427a23a8-793e-4df0-9919-a7bd1a07b3cc","project_id":"b663d9a3-367a-4942-a836-bf0053c4e3db","content":"20260331_Đổi lại tên là Admin_SupaBase","type":"log","resolved":false,"is_todo":true,"is_done":true,"created_at":"2026-03-30T22:25:56.122000+00:00","updated_at":"2026-03-30T22:59:22.584000+00:00","user_id":"RongLeo"},{"id":"cc2ab7bc-2283-4b58-bbb1-751bd57379a2","project_id":"b2846372-df77-4e82-839f-ccfa56dad096","content":"20260331_Dừng hoàn toàn Web app này. Xóa Project trong supabase để chuyển qua project Admin_SupaBase (ID_app và ID_user)","type":"decision","resolved":false,"is_todo":true,"is_done":false,"created_at":"2026-03-30T22:23:07.056000+00:00","updated_at":"2026-03-30T22:23:07.056000+00:00","user_id":"RongLeo"},{"id":"75226924-81ff-4984-b471-ad1922327592","project_id":"b2846372-df77-4e82-839f-ccfa56dad096","content":"20260330_TẠM NGƯNG V2, VÌ BUG LUNG TUNG MÀ TỐN PHÍ CLAUDE. LÀM 1 V2 HOÀN TOÀN TÁCH BIỆT VÌ CÁI NÀY CỰC KỲ QUAN TRỌNG VỀ SAU. ĐÂY SẼ LÀ NƠI QUẢN LÝ DỮ LIỆU TỔNG CỦA MÌNH","type":"decision","resolved":false,"is_todo":true,"is_done":false,"created_at":"2026-03-30T09:50:43.867000+00:00","updated_at":"2026-03-30T09:50:43.867000+00:00","user_id":"RongLeo"},{"id":"12db7ec3-111f-49b8-93a4-4b951684ef4d","project_id":"b2846372-df77-4e82-839f-ccfa56dad096","content":"20260330_Claude đã code V2. Tích hợp ID_app, ID_user","type":"log","resolved":false,"is_todo":true,"is_done":true,"created_at":"2026-03-29T23:54:52.670000+00:00","updated_at":"2026-03-30T09:50:45.258000+00:00","user_id":"RongLeo"},{"id":"83a037a9-abff-42a9-8c87-3e2dbefd5311","project_id":"b2846372-df77-4e82-839f-ccfa56dad096","content":"20260330_Chưa đồng bộ được từ máy tính qua điện thoại => Do login bằng tài khoản Google. Đã fix => DONE v1","type":"bug","resolved":false,"is_todo":true,"is_done":true,"created_at":"2026-03-29T23:54:02.797000+00:00","updated_at":"2026-03-30T05:22:51.850000+00:00","user_id":"RongLeo"},{"id":"0f82a3e0-5001-4446-a956-dd15af25e098","project_id":"b2846372-df77-4e82-839f-ccfa56dad096","content":"20260330_Nâng cấp SupaBase để 1 Project được nhiều app (thêm ID_app) vào","type":"log","resolved":false,"is_todo":true,"is_done":true,"created_at":"2026-03-29T11:02:54.875000+00:00","updated_at":"2026-03-29T23:55:02.396000+00:00","user_id":"RongLeo"},{"id":"f23d1506-8e22-4d6d-b8b4-243f4bc1f441","project_id":"ff79740c-f04c-4342-b670-7e0966767392","content":"20260330_Claude Code xong. Chưa Deploy được do vướng vụ SupaBase chỉ cho 2 project miễn phí. Tạm dừng, chuyển qua nâng cấp cái App-Factory","type":"log","resolved":false,"is_todo":true,"is_done":true,"created_at":"2026-03-29T11:01:58.996000+00:00","updated_at":"2026-03-31T02:00:50.133000+00:00","user_id":"RongLeo"},{"id":"0b4baf34-a869-408f-ac5e-8491f4ffbb07","project_id":"b2846372-df77-4e82-839f-ccfa56dad096","content":"20260329_Nếu Spec qua lại nhiều lần thì cần có nút + và spec, review tiếp => đến cuối làm spec tổng để lưu làm template","type":"log","resolved":false,"is_todo":true,"is_done":true,"created_at":"2026-03-29T09:42:03.175000+00:00","updated_at":"2026-03-29T23:55:38.402000+00:00","user_id":"RongLeo"},{"id":"867a8dc8-6a82-4482-802b-5d7af0d9486c","project_id":"ff79740c-f04c-4342-b670-7e0966767392","content":"20260329_Dùng Spec của ChatGPT, kết nối WebApp App-Factory","type":"log","resolved":false,"is_todo":true,"is_done":true,"created_at":"2026-03-29T09:32:17.025000+00:00","updated_at":"2026-03-29T11:02:00.693000+00:00","user_id":"RongLeo"},{"id":"0c671d3d-4436-41e7-8bad-56b717e7b060","project_id":"ae75d7ac-234e-4aa0-916b-a2b0005defa2","content":"20260329_ý note phải cho bao gồm ảnh, link, văn bản. Hiện tại dán ảnh hay link vào là nó tự phân tích và ko cho sửa lại","type":"log","resolved":false,"is_todo":true,"is_done":false,"created_at":"2026-03-29T03:45:36.845000+00:00","updated_at":"2026-03-29T03:45:36.845000+00:00","user_id":"RongLeo"},{"id":"ca4c4083-8577-42f5-bc5b-506291aaf2f2","project_id":"b2846372-df77-4e82-839f-ccfa56dad096","content":"20260329_xong web app thì kết nối với dev_brain để đồng bộ","type":"idea","resolved":false,"is_todo":true,"is_done":false,"created_at":"2026-03-29T03:23:06.273000+00:00","updated_at":"2026-03-29T03:23:06.273000+00:00","user_id":"RongLeo"},{"id":"32fd9a5d-631e-49a9-9043-6f527eec366b","project_id":"b2846372-df77-4e82-839f-ccfa56dad096","content":"20260329_Claude Code","type":"log","resolved":false,"is_todo":true,"is_done":true,"created_at":"2026-03-29T03:22:09.860000+00:00","updated_at":"2026-03-29T09:12:24.162000+00:00","user_id":"RongLeo"},{"id":"1a5b76b5-b0f3-4587-baad-0e1013d084f7","project_id":"b2846372-df77-4e82-839f-ccfa56dad096","content":"20260329_Claude review Spec","type":"log","resolved":false,"is_todo":true,"is_done":true,"created_at":"2026-03-29T03:21:55.048000+00:00","updated_at":"2026-03-29T06:57:33.976000+00:00","user_id":"RongLeo"},{"id":"7bae910e-1bc0-4966-bf7b-5390a494c45b","project_id":"b2846372-df77-4e82-839f-ccfa56dad096","content":"20260329_Chat GPT Spect","type":"log","resolved":false,"is_todo":true,"is_done":true,"created_at":"2026-03-29T03:21:29.575000+00:00","updated_at":"2026-03-29T03:23:08.163000+00:00","user_id":"RongLeo"},{"id":"bdc2dbd7-e06f-428d-a3d5-7725578a7d65","project_id":"51082a43-075d-4b5b-86a0-722494ff284a","content":"20260329_Claude code sau khi đã phản biện Spec của ChatGPT","type":"log","resolved":false,"is_todo":true,"is_done":false,"created_at":"2026-03-29T02:45:52.311000+00:00","updated_at":"2026-03-29T02:45:52.311000+00:00","user_id":"RongLeo"},{"id":"3174c779-6c05-4cd5-ad31-01caf1b10a78","project_id":"51082a43-075d-4b5b-86a0-722494ff284a","content":"20260329_Claude phản biện Spec của ChatGPT","type":"log","resolved":false,"is_todo":true,"is_done":false,"created_at":"2026-03-29T02:45:12.978000+00:00","updated_at":"2026-03-29T02:45:12.978000+00:00","user_id":"RongLeo"},{"id":"35e9532e-c3e8-4780-8da6-427e896c97ce","project_id":"51082a43-075d-4b5b-86a0-722494ff284a","content":"20260329_ChatGPT scan cấu trúc file zip Dự án và lên Spec cho Claude code","type":"log","resolved":false,"is_todo":true,"is_done":true,"created_at":"2026-03-29T02:44:43.272000+00:00","updated_at":"2026-03-29T02:45:53.029000+00:00","user_id":"RongLeo"},{"id":"b1bd7af4-b27c-405b-a3d4-d498f0c8aaf4","project_id":"ade00721-8c8f-4222-a2f3-862843e2406d","content":"20230329_Deploy lên Vercel để test","type":"log","resolved":false,"is_todo":true,"is_done":false,"created_at":"2026-03-29T02:17:03.171000+00:00","updated_at":"2026-03-29T02:17:03.171000+00:00","user_id":"RongLeo"},{"id":"59d123cb-0023-4c18-89da-cde7a3d0cc22","project_id":"ade00721-8c8f-4222-a2f3-862843e2406d","content":"20260329_Claude CODE","type":"log","resolved":false,"is_todo":true,"is_done":true,"created_at":"2026-03-29T02:16:30.678000+00:00","updated_at":"2026-03-29T02:17:05.393000+00:00","user_id":"RongLeo"},{"id":"203babd3-25f7-4d8d-b857-fa1dccd8416b","project_id":"ade00721-8c8f-4222-a2f3-862843e2406d","content":"20260329_ChatGPT và Claude Spec xong","type":"log","resolved":false,"is_todo":true,"is_done":true,"created_at":"2026-03-29T02:16:07.907000+00:00","updated_at":"2026-03-29T02:17:04.935000+00:00","user_id":"RongLeo"},{"id":"4fef15aa-f6b1-4aee-8afc-a8a98db396e3","project_id":"c83c802e-521f-4717-a4fb-20b23b631db0","content":"20260329_Thêm tính năng sửa vì có khi hôm qua quên ghi, hôm nay ghi lại của hôm qua","type":"idea","resolved":false,"is_todo":true,"is_done":false,"created_at":"2026-03-28T23:26:24.519000+00:00","updated_at":"2026-03-28T23:26:24.519000+00:00","user_id":"RongLeo"},{"id":"7df37ecb-c71c-4978-be7f-0125f239cd8b","project_id":"5dfd06af-cd8a-458c-8c74-45655f523984","content":"20260328_Kiểm tra CODE và chạy","type":"log","resolved":false,"is_todo":true,"is_done":false,"created_at":"2026-03-28T23:21:11.279000+00:00","updated_at":"2026-03-28T23:21:11.279000+00:00","user_id":"RongLeo"},{"id":"54fcfc8e-5352-4b0a-aca7-8999059c5bcf","project_id":"5dfd06af-cd8a-458c-8c74-45655f523984","content":"20260328_Claude CODE","type":"log","resolved":false,"is_todo":true,"is_done":true,"created_at":"2026-03-28T23:19:49.200000+00:00","updated_at":"2026-03-28T23:20:03.436000+00:00","user_id":"RongLeo"},{"id":"a6b97170-dafd-4a10-99aa-cc0dfc312bd0","project_id":"94d33df5-8379-45b6-af74-3fe248cfb936","content":"20260329_Claude CODE","type":"log","resolved":false,"is_todo":true,"is_done":false,"created_at":"2026-03-28T23:19:28.519000+00:00","updated_at":"2026-03-28T23:19:28.519000+00:00","user_id":"RongLeo"},{"id":"a8302c80-5c63-4215-97c1-41ecdf39f195","project_id":"94d33df5-8379-45b6-af74-3fe248cfb936","content":"20260329_ChatGPT và Claude Spec và phản biện","type":"log","resolved":false,"is_todo":true,"is_done":false,"created_at":"2026-03-28T23:18:58.145000+00:00","updated_at":"2026-03-28T23:18:58.145000+00:00","user_id":"RongLeo"},{"id":"f71068d0-d6f6-47d1-afa6-95a0e59c1e43","project_id":"5dfd06af-cd8a-458c-8c74-45655f523984","content":"20260328_Đưa ChatGPT Spec để thêm những nội dung thiếu","type":"log","resolved":false,"is_todo":true,"is_done":true,"created_at":"2026-03-28T03:23:30.585000+00:00","updated_at":"2026-03-28T23:19:56.159000+00:00","user_id":"RongLeo"},{"id":"4a32c119-acdb-41f1-958a-256a62befd31","project_id":"5dfd06af-cd8a-458c-8c74-45655f523984","content":"20260328_Claude Scan dữ liệu của ngưòi kia để đưa ra bản đồ tổng thể","type":"log","resolved":false,"is_todo":true,"is_done":true,"created_at":"2026-03-28T03:22:58.093000+00:00","updated_at":"2026-03-28T23:19:55.675000+00:00","user_id":"RongLeo"},{"id":"d5619eb7-8c1d-4936-9507-33694198790b","project_id":"84527166-6790-5545-b5a6-0a26cfe9a7c1","content":"20260328_Cập nhật lên vercel","type":"log","resolved":false,"is_todo":true,"is_done":false,"created_at":"2026-03-28T03:10:35.043000+00:00","updated_at":"2026-03-28T03:10:35.043000+00:00","user_id":"RongLeo"},{"id":"e46d8e0d-8da0-4304-9d9b-97ac19a49898","project_id":"84527166-6790-5545-b5a6-0a26cfe9a7c1","content":"20260328_Cải tiến lại để đưa vào nơi quản lý web app tổng. Chat GPT đã Spec, Claude đã code","type":"log","resolved":false,"is_todo":false,"is_done":false,"created_at":"2026-03-28T03:10:09.940000+00:00","updated_at":"2026-03-28T03:10:09.940000+00:00","user_id":"RongLeo"},{"id":"65daca6a-9529-4c79-95b4-5f7d0b2400e3","project_id":"4bb0590a-8931-439a-b468-272034afea61","content":"20260328_ChatGPT kiến nghị ráp cả DevBrain vào hệ này","type":"idea","resolved":false,"is_todo":true,"is_done":true,"created_at":"2026-03-28T02:55:03.715000+00:00","updated_at":"2026-03-31T09:51:51.969000+00:00","user_id":"RongLeo"},{"id":"f9df60cc-20e1-4492-8b28-1a4facbc3520","project_id":"4bb0590a-8931-439a-b468-272034afea61","content":"20260328_ChatGPT đã spec, Claude đã code. Chưa deploy","type":"log","resolved":false,"is_todo":true,"is_done":true,"created_at":"2026-03-28T02:54:27.760000+00:00","updated_at":"2026-03-28T02:54:28.672000+00:00","user_id":"RongLeo"},{"id":"b67031f2-7112-4ab5-9611-783ee2b72dee","project_id":"9e7e9068-b660-4b23-a221-603b57f86749","content":"20260327_Clau và ChatGPT đang phản biện nhau. Chat GPT vừa trả lời. Phân tích rồi chép qua Claude để code","type":"log","resolved":false,"is_todo":true,"is_done":false,"created_at":"2026-03-27T08:34:13.674000+00:00","updated_at":"2026-03-27T08:34:13.674000+00:00","user_id":"RongLeo"},{"id":"ea9cb62b-68f9-4f75-906c-46b33a9222ac","project_id":"c83c802e-521f-4717-a4fb-20b23b631db0","content":"20260327_Deploy testing","type":"log","resolved":false,"is_todo":false,"is_done":false,"created_at":"2026-03-27T06:43:45.158000+00:00","updated_at":"2026-03-27T06:43:45.158000+00:00","user_id":"RongLeo"},{"id":"2c059bec-fca2-436d-8a44-2d3a40d7e7ca","project_id":"ae75d7ac-234e-4aa0-916b-a2b0005defa2","content":"20260327_Các hình ảnh sau khi lọc lưu phải xem lại được. Chứ AI phân tích xong ko biết cách nào xem lại ảnh cũng ko hiểu hết ý được","type":"log","resolved":false,"is_todo":false,"is_done":false,"created_at":"2026-03-27T06:39:16.118000+00:00","updated_at":"2026-03-27T06:39:16.118000+00:00","user_id":"RongLeo"},{"id":"9df7f539-22af-4438-bc22-03e4fa0520c7","project_id":"c83c802e-521f-4717-a4fb-20b23b631db0","content":"20260327_Làm file json để export và import dữ liệu","type":"decision","resolved":false,"is_todo":false,"is_done":false,"created_at":"2026-03-27T06:32:32.690000+00:00","updated_at":"2026-03-27T06:32:32.690000+00:00","user_id":"RongLeo"},{"id":"ba486a51-942e-4707-8082-5f10f785fe57","project_id":"5dfd06af-cd8a-458c-8c74-45655f523984","content":"20260327_File zip cấu trúc của Numerology_v2 và zip cấu trúc hoàn chỉnh của người khác đã chạy => Nén file người ta đưa vào Claude, Cursor phân tích cấu trúc rồi thêm vào các phần của mình","type":"decision","resolved":false,"is_todo":false,"is_done":false,"created_at":"2026-03-27T05:49:48.806000+00:00","updated_at":"2026-03-27T05:49:48.806000+00:00","user_id":"RongLeo"},{"id":"509d4028-fc49-460a-9629-9738762f21ae","project_id":"abb4b0cd-0007-4844-b2be-d03f60200f80","content":"20260327_Ko triển khai tiếp web app Claude đã làm. Làm như ChatGPT gợi ý. Tách riêng tính toán ra","type":"decision","resolved":false,"is_todo":false,"is_done":false,"created_at":"2026-03-27T05:43:51.456000+00:00","updated_at":"2026-03-27T05:43:51.456000+00:00","user_id":"RongLeo"},{"id":"eec73329-0da8-4816-88d6-f8e2f591d91a","project_id":"abb4b0cd-0007-4844-b2be-d03f60200f80","content":"20260327_Rảnh làm lại hệ sau. Giờ ko nên thay đổi quá nhiều trong cấu trúc mình đã nắm rõ","type":"decision","resolved":false,"is_todo":false,"is_done":false,"created_at":"2026-03-27T05:42:41.403000+00:00","updated_at":"2026-03-27T05:42:41.403000+00:00","user_id":"RongLeo"},{"id":"ff0b9bd9-e8ad-4876-aad6-ee6531bbd212","project_id":"ae75d7ac-234e-4aa0-916b-a2b0005defa2","content":"20260327_FireBase dùng mail pmn.luutru@gmail.com","type":"log","resolved":false,"is_todo":false,"is_done":false,"created_at":"2026-03-27T03:32:05.718000+00:00","updated_at":"2026-03-27T03:32:05.718000+00:00","user_id":"RongLeo"},{"id":"dd677882-3d02-4ade-9c85-407b0e7c0e83","project_id":"84527166-6790-5545-b5a6-0a26cfe9a7c1","content":"20260327_SupaBase dùng mail: pmn88.ai@gmail.com, kết nối Github","type":"log","resolved":false,"is_todo":false,"is_done":false,"created_at":"2026-03-27T03:31:09.031000+00:00","updated_at":"2026-03-27T03:31:09.031000+00:00","user_id":"RongLeo"},{"id":"074c715f-0d90-4faa-b4bc-b3463d164875","project_id":"84527166-6790-5545-b5a6-0a26cfe9a7c1","content":"20260327_Mục Link đưa lên trên cùng, cho chế độ thu ngắn lại, khi cần thì show đủ","type":"idea","resolved":false,"is_todo":true,"is_done":true,"created_at":"2026-03-27T02:04:39.220000+00:00","updated_at":"2026-03-27T02:04:42.266000+00:00","user_id":"RongLeo"},{"id":"c4675047-54d6-44f1-9ae3-436249a27c1e","project_id":"ae75d7ac-234e-4aa0-916b-a2b0005defa2","content":"20260327_Cho sửa lại ý đã lưu","type":"idea","resolved":false,"is_todo":true,"is_done":false,"created_at":"2026-03-27T01:59:22.372000+00:00","updated_at":"2026-03-27T01:59:22.372000+00:00","user_id":"RongLeo"},{"id":"24fb239e-680d-4516-a5ff-4f33901703cb","project_id":"324474c5-c2b1-4b7e-9b5b-a621870d43f7","content":"20260327_Chạy nền khi điện thoại tắt màn hình","type":"idea","resolved":false,"is_todo":true,"is_done":true,"created_at":"2026-03-27T01:09:45.418000+00:00","updated_at":"2026-03-27T01:47:27.180000+00:00","user_id":"RongLeo"},{"id":"e77b8924-ef83-4b63-a575-cc5901c04847","project_id":"ae75d7ac-234e-4aa0-916b-a2b0005defa2","content":"20260327_Đang giai đoạn testing","type":"log","resolved":false,"is_todo":true,"is_done":true,"created_at":"2026-03-27T01:04:51.755000+00:00","updated_at":"2026-03-29T03:44:33.496000+00:00","user_id":"RongLeo"},{"id":"916d275d-1942-460b-ae07-945428aa27d4","project_id":"a153a0ee-c219-4500-94c2-8fbd4be9b0cc","content":"20260327_Thêm mục ru ngủ","type":"idea","resolved":false,"is_todo":true,"is_done":false,"created_at":"2026-03-27T00:58:07.081000+00:00","updated_at":"2026-03-27T00:58:07.081000+00:00","user_id":"RongLeo"},{"id":"f0239b3b-345c-4562-b11b-bf725b791729","project_id":"a153a0ee-c219-4500-94c2-8fbd4be9b0cc","content":"20260327_Thêm mục Truyện cười thiếu nhi","type":"idea","resolved":false,"is_todo":true,"is_done":false,"created_at":"2026-03-27T00:57:45.001000+00:00","updated_at":"2026-03-27T00:57:45.001000+00:00","user_id":"RongLeo"},{"id":"834e9469-793e-4a83-a08c-9e3d97254cbb","project_id":"a153a0ee-c219-4500-94c2-8fbd4be9b0cc","content":"20260327_Đã Deploy APK (Sương, Ty, Nhật Minh)","type":"log","resolved":false,"is_todo":true,"is_done":true,"created_at":"2026-03-27T00:57:20.729000+00:00","updated_at":"2026-03-27T00:57:23.411000+00:00","user_id":"RongLeo"},{"id":"ebbc2207-1ca3-4653-bec5-f3f01201b96b","project_id":"a153a0ee-c219-4500-94c2-8fbd4be9b0cc","content":"20260327_Ko đưa lên Google Store (phải tốn 25$); Ko chuyển IOS (Phải làm webApp độc lập)","type":"decision","resolved":false,"is_todo":false,"is_done":false,"created_at":"2026-03-27T00:56:36.973000+00:00","updated_at":"2026-03-27T00:56:36.973000+00:00","user_id":"RongLeo"},{"id":"3effd802-0583-4a52-9c40-bedd8671dfbf","project_id":"84527166-6790-5545-b5a6-0a26cfe9a7c1","content":"20260327_Backlog, Link ko cho sửa","type":"idea","resolved":false,"is_todo":true,"is_done":false,"created_at":"2026-03-27T00:54:48.644000+00:00","updated_at":"2026-03-27T02:04:26.988000+00:00","user_id":"RongLeo"},{"id":"9dd45309-c85e-442a-9340-0874f5a23911","project_id":"84527166-6790-5545-b5a6-0a26cfe9a7c1","content":"20260327_Info quá dài. Thêm chế độ thu ngắn lại (các mục khác cũng vậy), khi cần thì bấm \"xem thêm\" thì mới show ra hết. => Chưa làm ngay. Tiếp tục test 1 thời gian nữa","type":"idea","resolved":false,"is_todo":true,"is_done":true,"created_at":"2026-03-27T00:45:52.802000+00:00","updated_at":"2026-03-27T02:04:47.523000+00:00","user_id":"RongLeo"},{"id":"9f948741-4af1-5dae-b1fd-78f681e983ee","project_id":"84527166-6790-5545-b5a6-0a26cfe9a7c1","content":"20260327_Phần note, idea phải cho sửa lại. Hiện ko cho sửa","type":"idea","resolved":false,"is_todo":true,"is_done":true,"created_at":"2026-03-26T15:26:59.469000+00:00","updated_at":"2026-03-26T17:22:22.027000+00:00","user_id":"RongLeo"},{"id":"866dd320-e626-5e27-8560-086daee82a1c","project_id":"84527166-6790-5545-b5a6-0a26cfe9a7c1","content":"20260327_Chưa đồng bộ hóa trên các thiết bị mà phải export và import file json","type":"idea","resolved":false,"is_todo":true,"is_done":true,"created_at":"2026-03-26T15:26:26.389000+00:00","updated_at":"2026-03-27T00:32:54.275000+00:00","user_id":"RongLeo"},{"id":"da380b1a-98e0-59f8-a8dc-b804f8ece866","project_id":"84527166-6790-5545-b5a6-0a26cfe9a7c1","content":"20260327_Đã Deploy trên vercel. Bắt đầu Test web app","type":"log","resolved":false,"is_todo":false,"is_done":false,"created_at":"2026-03-26T15:20:00.781000+00:00","updated_at":null,"user_id":"RongLeo"}],"improvements":[{"id":"604f1344-5cc1-41c2-bac9-d63a47e6a5b1","project_id":"a153a0ee-c219-4500-94c2-8fbd4be9b0cc","content":"- Link API Groq: https://console.groq.com/keys","priority":"high","status":"done"}],"links":[{"id":"14eced44-5923-5543-aef8-3279ec785d99","project_id":"84527166-6790-5545-b5a6-0a26cfe9a7c1","label":"Testing","url":"https://rongleo-devbrain.vercel.app/"},{"id":"0e446b36-b065-4f1a-ab31-b6d99ef6e4df","project_id":"ae75d7ac-234e-4aa0-916b-a2b0005defa2","label":"link","url":"https://rongleo-note-brain.vercel.app/"},{"id":"0afa0c58-64bf-4708-bd9a-f0bd11f77d4e","project_id":"324474c5-c2b1-4b7e-9b5b-a621870d43f7","label":"link","url":"https://rongleo-read-news.vercel.app/"},{"id":"36dc7716-a2d5-4f4a-847d-58670364e436","project_id":"84527166-6790-5545-b5a6-0a26cfe9a7c1","label":"SupaBase","url":"https://supabase.com/dashboard/project/tgsjsfplsolgbthvkcjk/sql/ea675d23-1468-42f1-b79a-a7b98be64346"},{"id":"bc8c04fa-8aa2-49b0-a9be-d39b84af0a91","project_id":"84527166-6790-5545-b5a6-0a26cfe9a7c1","label":"ChatGPT","url":"https://chatgpt.com/share/69c63612-a5ec-8323-bb1d-b06ac6343ad3"},{"id":"542ea5cf-a584-4a9c-a0b4-9b8c6ff4fc38","project_id":"84527166-6790-5545-b5a6-0a26cfe9a7c1","label":"Claude","url":"https://claude.ai/share/d2ba0747-5486-4c95-8866-c923e060c1e3"},{"id":"de069ccd-8acb-4f3b-8fee-17230b265a1d","project_id":"84527166-6790-5545-b5a6-0a26cfe9a7c1","label":"Google Drive","url":"https://drive.google.com/drive/folders/1JR1GpK0oK-y8jyaNtxHw1fWQRfygLX1h"},{"id":"a2996bc7-5de3-4f63-a3ff-dfc467e2600c","project_id":"324474c5-c2b1-4b7e-9b5b-a621870d43f7","label":"Notion","url":"https://www.notion.so/02_RongLeo_Read_for_You-32d76ebcfa428055b0b3d259553bff72?source=copy_link"},{"id":"0d8b8819-3962-4d45-9c71-5a20a2e091c0","project_id":"a153a0ee-c219-4500-94c2-8fbd4be9b0cc","label":"Notion","url":"https://www.notion.so/DASHBOARD-APP-RongLeo-N-i-v-i-b-32976ebcfa428070b279e03756460d3e?source=copy_link"},{"id":"160c34ff-af48-4fce-9087-19359f16d44d","project_id":"a153a0ee-c219-4500-94c2-8fbd4be9b0cc","label":"API Groq_pmm.luutrru","url":"https://console.groq.com/keys"},{"id":"eaff728f-42f9-464d-a0b0-29c308c98210","project_id":"abb4b0cd-0007-4844-b2be-d03f60200f80","label":"Notion","url":"https://www.notion.so/04_RongLeo_QL_Tai_chinh-33076ebcfa4280808445d555e1db046b?source=copy_link"},{"id":"f74b0d90-fe6e-45c3-9053-f271d7676332","project_id":"abb4b0cd-0007-4844-b2be-d03f60200f80","label":"ChatGPT","url":"https://chatgpt.com/share/69c679d4-f784-839c-92b9-1eda99c1ca77"},{"id":"de3dbf16-4416-43ed-9f6e-152f31ef7c73","project_id":"abb4b0cd-0007-4844-b2be-d03f60200f80","label":"Claude","url":"https://claude.ai/share/57397c5d-f07c-40e0-8740-e3a26868eb89"},{"id":"e3a05728-00b4-4590-8341-9cc57974c924","project_id":"5dfd06af-cd8a-458c-8c74-45655f523984","label":"Google Drive_pmn.luutru","url":"https://drive.google.com/drive/folders/1b5JDYZeCZN0Xcmqf9zotgCsxmj_CrMvE"},{"id":"26babc0a-b517-4865-aa01-5f098a88bc51","project_id":"c83c802e-521f-4717-a4fb-20b23b631db0","label":"ChatGPT","url":"https://chatgpt.com/share/69c68444-d2d0-8320-9fd6-8331d4b18de0"},{"id":"231730e0-abd7-4ec0-bcad-85012bb9d309","project_id":"c83c802e-521f-4717-a4fb-20b23b631db0","label":"Claude","url":"https://claude.ai/share/7108a20a-029d-42f6-be21-9673c4fdfa94"},{"id":"2341a2d0-ed88-4cb5-b3b2-934793e58646","project_id":"ae75d7ac-234e-4aa0-916b-a2b0005defa2","label":"Notion","url":"https://www.notion.so/01_RongLeo_Note-Idea-32c76ebcfa4280c9a05dc8e5799d522e?source=copy_link"},{"id":"da4e95f1-f280-4020-ae5b-94fa2e92a30d","project_id":"c83c802e-521f-4717-a4fb-20b23b631db0","label":"Testing","url":"https://rongleo-habit-tracker.vercel.app/"},{"id":"6b78534a-52c3-416b-b01a-77ef77bf7302","project_id":"9e7e9068-b660-4b23-a221-603b57f86749","label":"ChatGPT","url":"https://chatgpt.com/share/69c69ced-11b4-8324-b71a-f8dcf0b03151"},{"id":"bc496b89-f54f-460d-85e0-e5a33a010e6b","project_id":"9e7e9068-b660-4b23-a221-603b57f86749","label":"Claude","url":"https://claude.ai/share/7dc356c1-8a47-49e2-b1ae-8f35baf1c5b2"},{"id":"760232f6-9f36-4d7c-9730-55af2785f222","project_id":"4bb0590a-8931-439a-b468-272034afea61","label":"ChatGPT","url":"https://chatgpt.com/share/69c6a456-e160-8323-8bd8-0d3f5e19f70e"},{"id":"e23bfee5-e2e0-4559-875f-31bac7baccc0","project_id":"4bb0590a-8931-439a-b468-272034afea61","label":"Claude","url":"https://claude.ai/share/97af6fae-d5cd-4c7b-b319-5bb834ea3c5c"},{"id":"f3f7f1b3-e2b1-4126-9877-9e024141a0ab","project_id":"5dfd06af-cd8a-458c-8c74-45655f523984","label":"Claude","url":"https://claude.ai/share/7dc356c1-8a47-49e2-b1ae-8f35baf1c5b2"},{"id":"c1d3de09-f5d8-4d7a-bb08-96c4a24bfd3a","project_id":"5dfd06af-cd8a-458c-8c74-45655f523984","label":"ChatGPT","url":"https://chatgpt.com/share/69c7c84b-9628-8323-a11a-8783e61847f7"},{"id":"e142efcc-8a34-4917-adf1-1830c3f9f972","project_id":"94d33df5-8379-45b6-af74-3fe248cfb936","label":"ChatGPT","url":"https://chatgpt.com/share/69c8c409-bad4-8322-8c37-5a3c2d30e8a7"},{"id":"88cbdfe4-d1ce-4fc8-8e0e-3c6c720bdd67","project_id":"94d33df5-8379-45b6-af74-3fe248cfb936","label":"Claude","url":"https://claude.ai/share/18cc69df-809f-428d-b191-fb8597e2ccec"},{"id":"e8981b9c-0655-4f83-a200-a3e7ea2e1369","project_id":"ade00721-8c8f-4222-a2f3-862843e2406d","label":"ChatGPT","url":"https://chatgpt.com/share/69c8dd1d-f3f0-8324-afa1-57a5b24d5688"},{"id":"66c35796-fb1b-4946-aa4e-ed3e6dbd428b","project_id":"ade00721-8c8f-4222-a2f3-862843e2406d","label":"Claude","url":"https://claude.ai/share/d6d69150-268b-4c35-8ae4-21f6991f191f"},{"id":"e3ae1847-d6de-47a1-bdec-a44137ebe1a0","project_id":"51082a43-075d-4b5b-86a0-722494ff284a","label":"ChatGPT","url":"https://chatgpt.com/share/69c8c409-bad4-8322-8c37-5a3c2d30e8a7"},{"id":"6cfeefac-9230-49e6-afd0-eeae2bdd67db","project_id":"b2846372-df77-4e82-839f-ccfa56dad096","label":"ChatGPT","url":"https://chatgpt.com/share/69c8fcfa-5b50-8323-b45e-f02579b0d322"},{"id":"b9292179-212e-44fa-b928-bcda8b2ceecc","project_id":"b2846372-df77-4e82-839f-ccfa56dad096","label":"Link App","url":"https://app-factory-mu.vercel.app/dashboard"},{"id":"3772f0bf-0398-4e0a-af62-f8565acc4f20","project_id":"b2846372-df77-4e82-839f-ccfa56dad096","label":"Notion","url":"https://www.notion.so/06_Auto_Build_App-33276ebcfa42805b8ab6d65f2def0055"},{"id":"948d6dd2-f024-4c74-8ebc-7d9af16a07c3","project_id":"b2846372-df77-4e82-839f-ccfa56dad096","label":"Claude","url":"https://claude.ai/share/db55610e-a789-436b-a315-4225f42cb286"},{"id":"eccd00a2-b7a8-4afe-980a-c63ebe0fab95","project_id":"b2846372-df77-4e82-839f-ccfa56dad096","label":"ChatGPT (nâng SupaBase)","url":"https://chatgpt.com/g/g-p-69c63d945d94819180af259972515e21/c/69c964fa-38e4-8322-b5e6-e6fde6ac185d"},{"id":"ddfe54fb-a145-4089-8108-d66e6f1428a6","project_id":"b663d9a3-367a-4942-a836-bf0053c4e3db","label":"ChatGPT","url":"https://www.notion.so/2e176ebcfa4280209c38d62e9bbfacaf?v=2e176ebcfa42816e958c000c57261ebd&p=33076ebcfa42809b81b5e05e8374a88e&pm=s"},{"id":"370d32a0-3bd2-4811-9995-70072bee21c4","project_id":"b663d9a3-367a-4942-a836-bf0053c4e3db","label":"Link App","url":"https://admin-supa-base.vercel.app/"},{"id":"011a3d20-a4b5-434f-b046-efe1fa243064","project_id":"b663d9a3-367a-4942-a836-bf0053c4e3db","label":"Notion","url":"https://www.notion.so/08_Admin_SupaBase-33476ebcfa42806b9c83dec5c23c3210?source=copy_link"},{"id":"3142b4ee-fe90-411d-b2eb-a68cff6462a7","project_id":"b663d9a3-367a-4942-a836-bf0053c4e3db","label":"Claude","url":"https://claude.ai/share/19486b59-3a33-4b40-96e7-8cef52e33eff"},{"id":"2c43f71b-96a7-47cf-b71c-1e82ceb9c0d3","project_id":"c53555b0-4d5e-411b-a9c4-73568f7471e0","label":"ChatGPT","url":"https://chatgpt.com/share/69cb99a7-7fe8-8324-a03b-702a5fde2dd2"},{"id":"d1509ff7-518f-44c2-ba9f-851893c47dbd","project_id":"ff79740c-f04c-4342-b670-7e0966767392","label":"Link App","url":"https://rongleo-karaoke-g2sl.vercel.app/"},{"id":"afdf3e96-3d78-44be-931c-8c8e454aa0a7","project_id":"ff79740c-f04c-4342-b670-7e0966767392","label":"ChatGPT","url":"https://chatgpt.com/g/g-p-69c63dbd4d2481919e9b251a8f8a25ff-idea/c/69c57be5-c08c-83a0-b64a-4ad73758ad82"},{"id":"75e93bc1-728b-4d73-b6ca-e48c62515638","project_id":"ff79740c-f04c-4342-b670-7e0966767392","label":"Claude","url":"https://claude.ai/share/514d1fbb-654d-4e7f-94d5-48a37097b425"},{"id":"71a0d230-5aaa-4ace-b2cf-045d5d321aa6","project_id":"4bb0590a-8931-439a-b468-272034afea61","label":"Link App","url":"https://rongleo-portal.vercel.app/"},{"id":"3bfe1438-e3fa-40e5-9ab7-31c83524c037","project_id":"60a8dfe2-025a-4015-adb7-77169fe36b24","label":"ChatGPT","url":"https://chatgpt.com/g/g-p-69c63d945d94819180af259972515e21-specing/c/69cbff83-53b4-8324-9113-ae4305eac37f"},{"id":"092a0535-7f4e-4ea5-8dad-a6b3b626866f","project_id":"60a8dfe2-025a-4015-adb7-77169fe36b24","label":"Claude","url":"https://claude.ai/share/5b9bfb32-4507-42c2-8b8c-6026951c9705"},{"id":"e55f487c-438c-40b5-85b9-b886587af9a5","project_id":"60a8dfe2-025a-4015-adb7-77169fe36b24","label":"Link App","url":"https://rongleo-contact.vercel.app/"},{"id":"c9625233-47c6-4b1f-a196-4821825f44bc","project_id":"ff79740c-f04c-4342-b670-7e0966767392","label":"Link App_FINAL","url":"https://rongleo-karaoke-final.vercel.app/"}]};
+
+// ── seedIfEmpty ───────────────────────────────────────────────
+// ADD THIS — called during initSupabase, runs only when DB is empty
+// ADD THIS: version marker — bump này khi cần re-seed
+const SEED_VERSION = 'v1-20260401';
+
+async function seedIfEmpty(){
+  try{
+    // MODIFY: check count == expected, not just any row
+    const EXPECTED_PROJECTS = SEED_DATA.projects.length;
+    const{count,error}=await sb.from('projects')
+      .select('id',{count:'exact',head:true});
+    if(error){console.warn('[SEED] check failed:',error.message);return;}
+    if(count>=EXPECTED_PROJECTS){
+      console.log(`[SEED] DB has ${count} projects (expected ${EXPECTED_PROJECTS}), skipping.`);
+      return;
+    }
+    // Partial seed detected — warn but proceed to fill missing
+    if(count>0){
+      console.warn(`[SEED] Partial data detected (${count}/${EXPECTED_PROJECTS}). Re-seeding...`);
+      toast('⚠️ Dữ liệu bị thiếu, đang import lại...');
+    }
+
+    console.log('[SEED] DB is empty — inserting seed data...');
+    toast('⏳ Đang import dữ liệu lần đầu...');
+    const BATCH=20;
+
+    // Insert projects
+    const prjs=SEED_DATA.projects.map(p=>({...p,user_id:'RongLeo',app_id:'devbrain'}));
+    for(let i=0;i<prjs.length;i+=BATCH){
+      const{error:e}=await sb.from('projects').insert(prjs.slice(i,i+BATCH));
+      if(e)throw new Error('Insert projects: '+e.message);
+    }
+
+    // Insert notes
+    const nts=(SEED_DATA.notes||[]).map(n=>({...n,user_id:'RongLeo'}));
+    for(let i=0;i<nts.length;i+=BATCH){
+      const{error:e}=await sb.from('notes').insert(nts.slice(i,i+BATCH));
+      if(e)throw new Error('Insert notes: '+e.message);
+    }
+
+    // Insert improvements
+    const imps=(SEED_DATA.improvements||[]);
+    for(let i=0;i<imps.length;i+=BATCH){
+      const{error:e}=await sb.from('improvements').insert(imps.slice(i,i+BATCH));
+      if(e)throw new Error('Insert improvements: '+e.message);
+    }
+
+    // Insert links
+    const lnks=(SEED_DATA.links||[]);
+    for(let i=0;i<lnks.length;i+=BATCH){
+      const{error:e}=await sb.from('links').insert(lnks.slice(i,i+BATCH));
+      if(e)throw new Error('Insert links: '+e.message);
+    }
+
+    // Insert spec_items if present
+    const specs=(SEED_DATA.specItems||SEED_DATA.spec_items||[]).map(s=>({...s,user_id:'RongLeo'}));
+    for(let i=0;i<specs.length;i+=BATCH){
+      const{error:e}=await sb.from('spec_items').insert(specs.slice(i,i+BATCH));
+      if(e)throw new Error('Insert spec_items: '+e.message);
+    }
+
+    console.log(`[SEED] Done — ${prjs.length} projects, ${nts.length} notes, ${lnks.length} links`);
+    toast(`✅ Import ${prjs.length} projects, ${nts.length} notes xong!`);
+  }catch(err){
+    console.error('[SEED] failed:',err);
+    toast('⚠️ Seed thất bại: '+err.message+' — tiếp tục bình thường');
+    // Do NOT block app — continue to loadAll even if seed fails
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════
 // SUPABASE LAYER — uses window.supabase (UMD, no import needed)
 // ═══════════════════════════════════════════════════════════════
 const SB_URL='https://tgsjsfplsolgbthvkcjk.supabase.co'
@@ -962,7 +1266,30 @@ const SB_KEY='sb_publishable_A9Q1nhfMsmN3A2GIrISQ4w_IaRgmyph'
 const sb=window.supabase.createClient(SB_URL,SB_KEY)
 
 // Field mapping: DB snake_case → JS camelCase
-function mapProject(r){return{id:r.id,name:r.name,description:r.description||'',useCase:r.use_case||'',status:r.status,tags:r.tags||[],keywords:r.keywords||'',checklist:r.checklist||[false,false,false,false,false],createdAt:new Date(r.created_at).getTime(),updatedAt:new Date(r.updated_at).getTime(),snoozedUntil:r.snoozed_until?new Date(r.snoozed_until).getTime():0}}
+function mapProject(r){return{
+  id:r.id,name:r.name,description:r.description||'',useCase:r.use_case||'',
+  status:r.status,tags:r.tags||[],keywords:r.keywords||'',
+  checklist:r.checklist||[false,false,false,false,false],
+  userId:r.user_id||CURRENT_USER,   // ADD
+  appId:r.app_id||APP_ID,           // ADD
+  lastSyncedAt:r.last_synced_at?new Date(r.last_synced_at).getTime():null, // ADD
+  createdAt:new Date(r.created_at).getTime(),
+  updatedAt:new Date(r.updated_at).getTime(),
+  lastActivityAt:r.last_activity_at?new Date(r.last_activity_at).getTime():new Date(r.updated_at).getTime(), // FIX1
+  snoozedUntil:r.snoozed_until?new Date(r.snoozed_until).getTime():0,
+}}
+// ADD: spec item mapper
+function mapSpec(r){return{
+  id:r.id,projectId:r.project_id,
+  role:r.role||'user',
+  content:r.content||'',
+  type:r.type||'text',
+  isSelected:!!r.is_selected,
+  note:r.note||'',
+  imageUrl:r.image_url||null,
+  linkUrl:r.link_url||null,
+  createdAt:new Date(r.created_at).getTime(),
+}}
 function mapNote(r){return{id:r.id,projectId:r.project_id,content:r.content,type:r.type,resolved:!!r.resolved,isTodo:!!r.is_todo,isDone:!!r.is_done,createdAt:new Date(r.created_at).getTime(),updatedAt:r.updated_at?new Date(r.updated_at).getTime():null}}
 function mapImp(r){return{id:r.id,projectId:r.project_id,content:r.content,priority:r.priority,status:r.status}}
 function mapLink(r){return{id:r.id,projectId:r.project_id,label:r.label,url:r.url}}
@@ -971,14 +1298,15 @@ function mapLink(r){return{id:r.id,projectId:r.project_id,label:r.label,url:r.ur
 async function loadAll(){
   const btn=document.getElementById('newpbtn');if(btn)btn.disabled=true;
   try{
-    const[{data:projects,error:e1},{data:notes,error:e2},{data:imps,error:e3},{data:links,error:e4}]=await Promise.all([
+    const[{data:projects,error:e1},{data:notes,error:e2},{data:imps,error:e3},{data:links,error:e4},{data:specs,error:e5}]=await Promise.all([
       sb.from('projects').select('*').order('updated_at',{ascending:false}),
       sb.from('notes').select('*').order('created_at',{ascending:false}),
       sb.from('improvements').select('*'),
       sb.from('links').select('*'),
+      sb.from('spec_items').select('*').order('created_at',{ascending:true}).limit(20), // FIX2: initial page
     ]);
-    if(e1||e2||e3||e4){
-      const e=e1||e2||e3||e4;
+    if(e1||e2||e3||e4||e5){
+      const e=e1||e2||e3||e4||e5;
       console.error('[SB] Error code:',e.code,'message:',e.message,'hint:',e.hint,'details:',e.details);
       toast('❌ '+e.message+' (code: '+e.code+')');
       return false;
@@ -987,6 +1315,14 @@ async function loadAll(){
     S.notes=(notes||[]).map(mapNote);
     S.improvements=(imps||[]).map(mapImp);
     S.links=(links||[]).map(mapLink);
+    S.specItems=(specs||[]).map(mapSpec); // FIX2: initial 20 per project, sorted asc
+    // Init pagination: mark projects that might have more
+    const specByProject={};
+    S.specItems.forEach(s=>{specByProject[s.projectId]=(specByProject[s.projectId]||0)+1;});
+    S.specPages={};
+    Object.entries(specByProject).forEach(([pid,cnt])=>{
+      S.specPages[pid]={offset:cnt,hasMore:cnt>=20};
+    });
     const ts=new Set(S.tags);S.projects.forEach(p=>p.tags.forEach(t=>ts.add(t)));S.tags=[...ts];
     bIdx();return true;
   }catch(err){
@@ -1002,7 +1338,7 @@ async function loadAll(){
 async function dbSavePrj(pid,data){
   const now=new Date().toISOString();
   if(!pid){
-    const{data:row,error}=await sb.from('projects').insert({name:data.name,description:data.description,use_case:data.useCase,status:data.status,tags:data.tags,keywords:data.keywords,checklist:[false,false,false,false,false],snoozed_until:null,updated_at:now}).select().single();
+    const{data:row,error}=await sb.from('projects').insert({name:data.name,description:data.description,use_case:data.useCase,status:data.status,tags:data.tags,keywords:data.keywords,checklist:[false,false,false,false,false],snoozed_until:null,updated_at:now,user_id:CURRENT_USER,app_id:APP_ID}).select().single();
     if(error)throw error;return mapProject(row);
   }
   const{error}=await sb.from('projects').update({name:data.name,description:data.description,use_case:data.useCase,status:data.status,tags:data.tags,keywords:data.keywords,updated_at:now}).eq('id',pid);
@@ -1013,12 +1349,14 @@ async function dbUpdatePrjFields(id,fields){
   if('checklist' in fields)p.checklist=fields.checklist;
   if('status' in fields)p.status=fields.status;
   if('snoozedUntil' in fields)p.snoozed_until=fields.snoozedUntil?new Date(fields.snoozedUntil).toISOString():null;
+  if('lastSyncedAt' in fields)p.last_synced_at=fields.lastSyncedAt?new Date(fields.lastSyncedAt).toISOString():null; // ADD
+  if('lastActivityAt' in fields)p.last_activity_at=fields.lastActivityAt?new Date(fields.lastActivityAt).toISOString():null; // FIX1
   if(fields._touch!==false)p.updated_at=new Date().toISOString();
   const{error}=await sb.from('projects').update(p).eq('id',id);
   if(error)throw error;
 }
 async function dbDelProj(id){
-  await Promise.all([sb.from('notes').delete().eq('project_id',id),sb.from('improvements').delete().eq('project_id',id),sb.from('links').delete().eq('project_id',id)]);
+  await Promise.all([sb.from('notes').delete().eq('project_id',id),sb.from('improvements').delete().eq('project_id',id),sb.from('links').delete().eq('project_id',id),sb.from('spec_items').delete().eq('project_id',id)]);
   const{error}=await sb.from('projects').delete().eq('id',id);
   if(error)throw error;
 }
@@ -1059,20 +1397,71 @@ async function dbSaveLnk(data,pid){
 async function dbDelLnk(id){const{error}=await sb.from('links').delete().eq('id',id);if(error)throw error;}
 
 // ── Realtime sync ────────────────────────────────────────────────
+// FIX6: track {id → {ts, applied}} for smarter self-update detection
+// Map: id → unix timestamp (ms) of when we wrote it
+const _rtSkip=new Map();
+function rtSkipAdd(id){
+  _rtSkip.set(id,Date.now());
+  setTimeout(()=>_rtSkip.delete(id),8000); // longer window for slow networks
+}
+function _shouldSkipRt(id, dbRow){
+  if(!_rtSkip.has(id))return false;
+  const ourTs=_rtSkip.get(id); // when WE wrote this record (local clock)
+
+  // MODIFY: primary check — compare DB updated_at to our write time
+  // If DB updated_at is within 8s of when we wrote → our event, skip
+  const dbTs=dbRow.updated_at||dbRow.created_at;
+  if(dbTs){
+    const diff=Math.abs(new Date(dbTs).getTime()-ourTs);
+    if(diff<8000){
+      _rtSkip.delete(id);
+      return true; // our event
+    }
+    // DB ts is far from our write time → someone else updated, don't skip
+    _rtSkip.delete(id);
+    return false;
+  }
+
+  // Fallback: no timestamp in DB row — check if we wrote within last 8s
+  const age=Date.now()-ourTs;
+  if(age<8000){_rtSkip.delete(id);return true;}
+  _rtSkip.delete(id);
+  return false;
+}
+
 function startRealtime(){
-  const mapFns={projects:mapProject,notes:mapNote,improvements:mapImp,links:mapLink};
-  ['projects','notes','improvements','links'].forEach(tbl=>{
+  const mapFns={projects:mapProject,notes:mapNote,improvements:mapImp,links:mapLink,spec_items:mapSpec};
+  const arrKey=tbl=>tbl==='spec_items'?'specItems':tbl;
+  ['projects','notes','improvements','links','spec_items'].forEach(tbl=>{
     sb.channel('db-'+tbl)
       .on('postgres_changes',{event:'*',schema:'public',table:tbl},({eventType:ev,new:nr,old:or})=>{
-        const arr=S[tbl];
-        if(ev==='INSERT'){if(!arr.find(x=>x.id===nr.id))arr.unshift(mapFns[tbl](nr));}
-        else if(ev==='UPDATE'){const i=arr.findIndex(x=>x.id===nr.id);if(i!==-1)arr[i]=mapFns[tbl](nr);}
-        else if(ev==='DELETE'){S[tbl]=arr.filter(x=>x.id!==or.id);}
-        bIdx();if(S.cpid)renderDet(S.cpid);else renderDash();
+        const key=arrKey(tbl);
+        const arr=S[key];
+        if(ev==='INSERT'){
+          if(_shouldSkipRt(nr.id,nr))return; // FIX6: timestamp comparison
+          if(!arr.find(x=>x.id===nr.id))arr.unshift(mapFns[tbl](nr));
+        }else if(ev==='UPDATE'){
+          if(_shouldSkipRt(nr.id,nr))return; // FIX6: skip own update
+          const i=arr.findIndex(x=>x.id===nr.id);
+          if(i!==-1)arr[i]=mapFns[tbl](nr);
+          // else row not in local state → add it (late arrival)
+          else arr.unshift(mapFns[tbl](nr));
+        }else if(ev==='DELETE'){
+          S[key]=arr.filter(x=>x.id!==(or?.id));
+        }
+        bIdx();
+        // Targeted re-render: only refresh affected project, not full dashboard
+        const affectedPid=nr?.project_id||or?.project_id;
+        if(S.cpid){
+          if(['notes','links','spec_items'].includes(tbl)&&affectedPid&&affectedPid!==S.cpid)return; // different project, skip
+          renderDet(S.cpid);
+        }else{
+          renderDash();
+        }
       })
       .subscribe();
   });
-  console.log('[SB] Realtime OK');
+  console.log('[SB] Realtime OK — timestamp-based self-filter active');
 }
 
 // ── App functions (Supabase versions) ────────────────────────────
@@ -1085,14 +1474,17 @@ async function savePrj(){
   cMo('m-project');
   if(pid){
     const p=S.projects.find(x=>x.id===pid);Object.assign(p,data,{updatedAt:Date.now()});
+    touchActivity(pid); // FIX1
     bIdx();renderDet(pid);toast('✅ Đã cập nhật!');
-    try{await dbSavePrj(pid,data);}catch(e){toast('❌ DB: '+e.message);await loadAll();renderDash();}
+    setSaveState('saving'); // FIX5
+    try{await dbSavePrj(pid,data);setSaveState('saved');}catch(e){setSaveState('error');toast('❌ Lưu thất bại, thử lại');await loadAll();renderDash();}
   }else{
     const tid=uid(),now=Date.now();
     const np={id:tid,...data,checklist:Array(CHKS.length).fill(false),createdAt:now,updatedAt:now,snoozedUntil:0};
     S.projects.unshift(np);bIdx();renderDash();
-    try{const created=await dbSavePrj(null,data);const i=S.projects.findIndex(x=>x.id===tid);if(i!==-1)S.projects[i]={...np,...created};bIdx();renderDash();toast('✅ Project mới!');}
-    catch(e){S.projects=S.projects.filter(x=>x.id!==tid);bIdx();renderDash();toast('❌ DB: '+e.message);}
+    setSaveState('saving');
+    try{const created=await dbSavePrj(null,data);rtSkipAdd(created.id);const i=S.projects.findIndex(x=>x.id===tid);if(i!==-1)S.projects[i]={...np,...created};bIdx();renderDash();setSaveState('saved');toast('✅ Project mới!');}
+    catch(e){setSaveState('error');S.projects=S.projects.filter(x=>x.id!==tid);bIdx();renderDash();toast('❌ Lưu thất bại, thử lại');}
   }
 }
 
@@ -1104,14 +1496,16 @@ async function saveNote(){
   if(nid){
     const n=S.notes.find(x=>x.id===nid);if(n)Object.assign(n,{content:c,type,isTodo,updatedAt:Date.now()});
     bIdx();if(S.cpid===pid)renderDet(pid);
-    try{await dbSaveNote(nid,{content:c,type,isTodo});toast('✅ Note đã cập nhật!');}
-    catch(e){toast('❌ DB: '+e.message);}
+    setSaveState('saving'); // FIX5
+    try{await dbSaveNote(nid,{content:c,type,isTodo});setSaveState('saved');toast('✅ Note đã cập nhật!');}
+    catch(e){setSaveState('error');toast('❌ Lưu thất bại, thử lại');}
   }else{
     const tid=uid(),now=Date.now();
     const nn={id:tid,projectId:pid,content:c,type,isTodo,isDone:false,resolved:false,createdAt:now,updatedAt:null};
-    S.notes.unshift(nn);touchP(pid);bIdx();if(S.cpid===pid)renderDet(pid);
-    try{const created=await dbSaveNote(null,{content:c,type,isTodo},pid);const i=S.notes.findIndex(x=>x.id===tid);if(i!==-1)S.notes[i]={...nn,id:created.id};bIdx();if(S.cpid===pid)renderDet(pid);toast('📝 Note đã thêm!');}
-    catch(e){S.notes=S.notes.filter(x=>x.id!==tid);bIdx();if(S.cpid===pid)renderDet(pid);toast('❌ DB: '+e.message);}
+    S.notes.unshift(nn);touchActivity(pid);bIdx();if(S.cpid===pid)renderDet(pid); // FIX1
+    setSaveState('saving');
+    try{const created=await dbSaveNote(null,{content:c,type,isTodo},pid);rtSkipAdd(created.id);const i=S.notes.findIndex(x=>x.id===tid);if(i!==-1)S.notes[i]={...nn,id:created.id};bIdx();if(S.cpid===pid)renderDet(pid);setSaveState('saved');toast('📝 Note đã thêm!');}
+    catch(e){setSaveState('error');S.notes=S.notes.filter(x=>x.id!==tid);bIdx();if(S.cpid===pid)renderDet(pid);toast('❌ Lưu thất bại, thử lại');}
   }
 }
 
@@ -1127,9 +1521,10 @@ async function togTodo(nid,pid){
 }
 async function togChk(pid,idx){
   const p=S.projects.find(x=>x.id===pid);if(!p.checklist)p.checklist=Array(CHKS.length).fill(false);
-  p.checklist[idx]=!p.checklist[idx];p.updatedAt=Date.now();renderDet(pid);
-  try{await dbUpdatePrjFields(pid,{checklist:p.checklist});}
-  catch(e){p.checklist[idx]=!p.checklist[idx];renderDet(pid);toast('❌ '+e.message);}
+  p.checklist[idx]=!p.checklist[idx];p.updatedAt=Date.now();p.lastActivityAt=Date.now();renderDet(pid);
+  setSaveState('saving'); // FIX5
+  try{await dbUpdatePrjFields(pid,{checklist:p.checklist});touchActivity(p.id);setSaveState('saved');} // FIX1+FIX5
+  catch(e){p.checklist[idx]=!p.checklist[idx];renderDet(pid);toast('❌ Lưu checklist thất bại, thử lại');}
 }
 async function saveImp(){
   const c=document.getElementById('eicont').value.trim();if(!c)return;
@@ -1190,9 +1585,9 @@ function askDelProj(pid){
 }
 async function contProj(pid){
   const p=S.projects.find(x=>x.id===pid);if(!p)return;
-  p.status='building';p.updatedAt=Date.now();p.snoozedUntil=0;bIdx();renderDet(pid);rSide();
+  p.status='building';p.updatedAt=Date.now();p.snoozedUntil=0;touchActivity(pid);bIdx();renderDet(pid);rSide(); // FIX1
   try{await dbUpdatePrjFields(pid,{status:'building',snoozedUntil:0});toast('▶ Active!');}
-  catch(e){toast('❌ '+e.message);}
+  catch(e){toast('❌ Lưu thất bại, thử lại');}
 }
 async function snzProj(pid){
   const p=S.projects.find(x=>x.id===pid);if(!p)return;
@@ -1202,13 +1597,321 @@ async function snzProj(pid){
 }
 async function dropProj(pid){
   const p=S.projects.find(x=>x.id===pid);if(!p)return;
-  p.status='dropped';p.updatedAt=Date.now();bIdx();renderDet(pid);rSide();
+  p.status='dropped';p.updatedAt=Date.now();touchActivity(pid);bIdx();renderDet(pid);rSide(); // FIX1
   try{await dbUpdatePrjFields(pid,{status:'dropped'});toast('Project đã drop');}
+  catch(e){toast('❌ Lưu thất bại, thử lại');}
+}
+
+
+// ── SPECING SYSTEM ────────────────────────────────────────
+
+// UI: render spec items accordion
+function rSpecItems(specs,pid){
+  if(!specs.length)return`<div style="text-align:center;padding:14px;color:var(--text3);font-size:.8rem">Chưa có spec item nào</div>`;
+  const pg=S.specPages[pid]||{hasMore:false};
+  const hasMore=pg.hasMore; // FIX2: server-side pagination
+  return specs.map(s=>{
+    const open=S.specExpanded[s.id];
+    const roleClass={user:'sr-user',chatgpt:'sr-chatgpt',claude:'sr-claude'}[s.role]||'sr-user';
+    const roleLbl={user:'👤 User',chatgpt:'🟢 ChatGPT',claude:'🟠 Claude'}[s.role]||s.role;
+    let contentHTML='';
+    if(s.type==='code')contentHTML=`<div class="spec-code">${esc(s.content)}</div>`;
+    else if(s.type==='image')contentHTML=`${s.content?`<p style="font-size:.8rem;margin-bottom:6px">${esc(s.content)}</p>`:''}${s.imageUrl?`<img src="${s.imageUrl}" class="spec-img" alt="spec img">`:''}`;
+    else if(s.type==='link')contentHTML=`${s.content?`<p style="font-size:.8rem;margin-bottom:6px">${esc(s.content)}</p>`:''}${s.linkUrl?`<a href="${s.linkUrl}" target="_blank" rel="noopener" class="spec-link-btn">🔗 ${s.linkUrl}</a>`:''}`;
+    else contentHTML=`<div class="spec-content">${esc(s.content)}</div>`;
+    return`<div class="spec-item ${open?'open':''}" id="si-${s.id}">
+      <div class="spec-head" onclick="S.specExpanded['${s.id}']=!S.specExpanded['${s.id}'];document.getElementById('si-${s.id}').classList.toggle('open')">
+        <div class="spec-sel-dot ${s.isSelected?'selected':''}"></div>
+        <span class="spec-role ${roleClass}">${roleLbl}</span>
+        <span class="spec-type-badge">${s.type}</span>
+        <span class="spec-preview">${esc(s.content.substring(0,60))}${s.content.length>60?'...':''}</span>
+        <i class="spec-arrow">▼</i>
+      </div>
+      <div class="spec-body">
+        ${contentHTML}
+        <div class="spec-note-wrap">
+          <div class="spec-note-lbl">Note / Insight</div>
+          <textarea class="spec-note-inp" placeholder="Ghi insight của mày..." oninput="saveSpecNote('${s.id}','${pid}',this.value)" onblur="flushSpecNote('${s.id}','${pid}',this.value)">${esc(s.note||'')}</textarea>
+        </div>
+        <div class="spec-foot">
+          <label class="spec-chk-wrap">
+            <input type="checkbox" ${s.isSelected?'checked':''} onchange="togSpecSel('${s.id}','${pid}',this.checked)">
+            Selected
+          </label>
+          <span class="spec-date">${timeAgo(s.createdAt)}</span>
+          <div style="margin-left:auto;display:flex;gap:5px">
+            <button class="btn bs bsm" onclick="oSpecMo('${pid}','${s.id}')">✎</button>
+            <button class="dbtn" onclick="askDelSpec('${s.id}','${pid}')">✕</button>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }).join('')
+  + (hasMore?`<button class="lmbtn" onclick="S.specPages['${pid}']=(S.specPages['${pid}']||1)+1;document.getElementById('spec-list-${pid}').innerHTML=rSpecItems(S.specItems.filter(s=>s.projectId==='${pid}'),'${pid}')">Xem thêm (${specs.length-shown.length} còn lại)</button>`:''); // FIX2
+}
+
+// Open spec modal (add or edit)
+function oSpecMo(pid,sid){
+  document.getElementById('es-pid').value=pid;
+  document.getElementById('es-sid').value=sid||'';
+  if(sid){
+    const s=S.specItems.find(x=>x.id===sid);if(!s)return;
+    document.getElementById('es-role').value=s.role;
+    document.getElementById('es-type').value=s.type;
+    document.getElementById('es-content').value=s.content;
+    document.getElementById('es-note').value=s.note||'';
+    document.getElementById('es-selected').checked=s.isSelected;
+    document.getElementById('es-link').value=s.linkUrl||'';
+    document.querySelector('#m-spec .mt').textContent='Edit Spec Item';
+    document.getElementById('spec-save-btn').textContent='Lưu';
+    if(s.imageUrl){
+      document.getElementById('es-img-preview').src=s.imageUrl;
+      document.getElementById('es-img-preview').style.display='block';
+    }
+  }else{
+    ['es-content','es-note','es-link'].forEach(id=>document.getElementById(id).value='');
+    document.getElementById('es-role').value='user';
+    document.getElementById('es-type').value='text';
+    document.getElementById('es-selected').checked=false;
+    document.getElementById('es-img-preview').style.display='none';
+    document.getElementById('es-img-status').textContent='';
+    document.querySelector('#m-spec .mt').textContent='Thêm Spec Item';
+    document.getElementById('spec-save-btn').textContent='Thêm';
+  }
+  onSpecTypeChange(document.getElementById('es-type').value);
+  oMo('m-spec');
+  setTimeout(()=>document.getElementById('es-content').focus(),100);
+}
+
+// Show/hide extra fields based on type
+function onSpecTypeChange(type){
+  document.getElementById('es-link-wrap').style.display=type==='link'?'flex':'none';
+  document.getElementById('es-img-wrap').style.display=type==='image'?'flex':'none';
+}
+
+// Handle image file selection → upload to Supabase Storage
+async function onSpecImgSelect(file){
+  if(!file)return;
+  const st=document.getElementById('es-img-status');
+  const prev=document.getElementById('es-img-preview');
+  // FIX3: validate file type before anything
+  if(!file.type.startsWith('image/')){
+    st.innerHTML='<span style="color:var(--red)">❌ File không phải ảnh (chỉ chấp nhận PNG/JPG/GIF/WebP)</span>';
+    document.getElementById('es-img-file').value='';
+    return;
+  }
+  st.innerHTML='<span style="color:var(--blue)">⏳ Đang resize...</span>';
+  try{
+    // FIX3: resize trước khi upload — max 1200px, quality 0.7
+    const blob=await resizeImage(file,1200,0.7);
+    const sizeMB=(blob.size/1024/1024).toFixed(2);
+    st.innerHTML=`<span style="color:var(--blue)">⏳ Đang upload (${sizeMB}MB)...</span>`;
+    const fname=`spec/${CURRENT_USER}/${uid()}.webp`;
+    const{data,error}=await sb.storage.from('devbrain-assets').upload(fname,blob,{contentType:'image/webp',upsert:false});
+    if(error)throw error;
+    const{data:{publicUrl}}=sb.storage.from('devbrain-assets').getPublicUrl(fname);
+    prev.src=publicUrl;prev.style.display='block';
+    prev.dataset.url=publicUrl;
+    st.innerHTML=`<span style="color:var(--green)">✅ Upload xong (${sizeMB}MB)</span>`;
+  }catch(e){
+    st.innerHTML=`<span style="color:var(--red)">❌ ${e.message}</span>`;
+  }
+}
+
+// FIX3: resize + convert to webp using canvas
+function resizeImage(file,maxW=1200,quality=0.7){
+  return new Promise((resolve,reject)=>{
+    // FIX3: explicit timeout guard against canvas hangs
+    const timeout=setTimeout(()=>{URL.revokeObjectURL(url);reject(new Error('Resize timeout'));},10000);
+    const img=new Image();
+    const url=URL.createObjectURL(file);
+    img.onload=()=>{
+      clearTimeout(timeout);
+      URL.revokeObjectURL(url);
+      let {width:w,height:h}=img;
+      if(w<=0||h<=0){reject(new Error('Ảnh không hợp lệ (width/height = 0)'));return;}
+      if(w>maxW){h=Math.round(h*maxW/w);w=maxW;}
+      try{
+        const c=document.createElement('canvas');
+        c.width=w;c.height=h;
+        const ctx=c.getContext('2d');
+        if(!ctx){reject(new Error('Canvas không khả dụng trên thiết bị này'));return;}
+        ctx.drawImage(img,0,0,w,h);
+        c.toBlob(b=>{
+          if(!b){reject(new Error('Canvas export thất bại'));return;}
+          resolve(b);
+        },'image/webp',quality);
+      }catch(canvasErr){reject(new Error('Lỗi canvas: '+canvasErr.message));}
+    };
+    img.onerror=()=>{clearTimeout(timeout);URL.revokeObjectURL(url);reject(new Error('Không đọc được file ảnh'));};
+    img.src=url;
+  });
+}
+
+// Save spec item (create or update)
+async function saveSpecItem(){
+  const content=document.getElementById('es-content').value.trim();
+  const pid=document.getElementById('es-pid').value;
+  const sid=document.getElementById('es-sid').value;
+  const type=document.getElementById('es-type').value;
+  if(!content&&type!=='image'){toast('❌ Nhập nội dung trước!');return;}
+  const prev=document.getElementById('es-img-preview');
+  const imageUrl=prev.dataset.url||prev.src||null;
+  const data={
+    projectId:pid,
+    role:document.getElementById('es-role').value,
+    content,type,
+    isSelected:document.getElementById('es-selected').checked,
+    note:document.getElementById('es-note').value.trim(),
+    imageUrl:type==='image'?imageUrl:null,
+    linkUrl:type==='link'?document.getElementById('es-link').value.trim():null,
+  };
+  cMo('m-spec');
+  if(sid){
+    const s=S.specItems.find(x=>x.id===sid);if(s)Object.assign(s,data);
+    touchActivity(pid); // FIX1
+    if(S.cpid===pid)renderDet(pid);
+    setSaveState('saving'); // FIX5
+    try{await dbSaveSpec(sid,data);setSaveState('saved');toast('✅ Spec item đã cập nhật!');}
+    catch(e){setSaveState('error');toast('❌ Lưu thất bại, thử lại');}
+  }else{
+    const tid=uid(),now=Date.now();
+    const ns={id:tid,...data,createdAt:now};
+    S.specItems.push(ns);touchActivity(pid);if(S.cpid===pid)renderDet(pid); // FIX1
+    try{const created=await dbSaveSpec(null,data,pid);rtSkipAdd(created.id);const i=S.specItems.findIndex(x=>x.id===tid);if(i!==-1)S.specItems[i].id=created.id;}
+    catch(e){S.specItems=S.specItems.filter(x=>x.id!==tid);if(S.cpid===pid)renderDet(pid);toast('❌ Lưu thất bại, thử lại');}
+    toast('📐 Spec item đã thêm!');
+  }
+}
+
+// Toggle selected
+async function togSpecSel(sid,pid,val){
+  const s=S.specItems.find(x=>x.id===sid);if(!s)return;
+  s.isSelected=val;
+  try{await dbSaveSpec(sid,{isSelected:val});}
+  catch(e){s.isSelected=!val;if(S.cpid===pid)renderDet(pid);toast('❌ Lưu thất bại, thử lại');} // FIX5
+}
+
+// FIX4: debounce for typing spam, blur forces immediate save
+const _specNoteTimers={};
+const _specNotePending={};
+function saveSpecNote(sid,pid,val){
+  _specNotePending[sid]=val; // always track latest value
+  clearTimeout(_specNoteTimers[sid]);
+  _specNoteTimers[sid]=setTimeout(()=>flushSpecNote(sid,pid,val),600);
+}
+async function flushSpecNote(sid,pid,val){
+  clearTimeout(_specNoteTimers[sid]); // FIX4: cancel any pending debounce
+  // Use _specNotePending if available (most recent oninput value), else fall back to blur val
+  const latest=Object.prototype.hasOwnProperty.call(_specNotePending,sid)?_specNotePending[sid]:val;
+  delete _specNotePending[sid];
+  const s=S.specItems.find(x=>x.id===sid);
+  if(s&&s.note===latest)return; // FIX4: skip if nothing changed
+  if(s)s.note=latest;
+  try{
+    await dbSaveSpec(sid,{note:latest});
+    // FIX5: brief visual confirmation on the textarea
+    const ta=document.querySelector(`textarea[onblur*="${sid}"]`);
+    if(ta){ta.style.borderColor='var(--green)';setTimeout(()=>ta.style.borderColor='',1200);}
+  }catch(e){
+    toast('❌ Lưu note thất bại, thử lại');
+    const ta=document.querySelector(`textarea[onblur*="${sid}"]`);
+    if(ta)ta.style.borderColor='var(--red)';
+  }
+}
+
+// Delete spec item
+function askDelSpec(sid,pid){
+  const snap=S.specItems.find(x=>x.id===sid);
+  cfm('Xoá spec item?','','🗑','Xoá',async()=>{
+    S.specItems=S.specItems.filter(s=>s.id!==sid);
+    if(S.cpid===pid)renderDet(pid);
+    toast('🗑 Đã xoá');
+    try{await dbDelSpec(sid);}
+    catch(e){S.specItems.push(snap);if(S.cpid===pid)renderDet(pid);toast('❌ '+e.message);}
+  });
+}
+
+// Mark synced
+async function markSynced(pid){
+  const p=S.projects.find(x=>x.id===pid);if(!p)return;
+  p.lastSyncedAt=Date.now();renderDet(pid);
+  try{await dbUpdatePrjFields(pid,{lastSyncedAt:p.lastSyncedAt,_touch:false});toast('🔄 Đã sync!');} // FIX5
   catch(e){toast('❌ '+e.message);}
+}
+
+// ── SPEC ITEM DB OPS ─────────────────────────────────────────
+async function dbSaveSpec(sid,data,pid){
+  if(!sid){
+    const{data:row,error}=await sb.from('spec_items').insert({
+      project_id:pid,role:data.role,content:data.content,type:data.type,
+      is_selected:!!data.isSelected,note:data.note||'',
+      image_url:data.imageUrl||null,link_url:data.linkUrl||null,
+      user_id:CURRENT_USER,
+    }).select().single();
+    if(error)throw error;return mapSpec(row);
+  }
+  const p={};
+  if('content' in data)p.content=data.content;
+  if('type' in data)p.type=data.type;
+  if('role' in data)p.role=data.role;
+  if('isSelected' in data)p.is_selected=!!data.isSelected;
+  if('note' in data)p.note=data.note;
+  if('imageUrl' in data)p.image_url=data.imageUrl;
+  if('linkUrl' in data)p.link_url=data.linkUrl;
+  const{error}=await sb.from('spec_items').update(p).eq('id',sid);
+  if(error){console.error('[SB] spec update error:',error);throw error;} // FIX5
+  return null;
+}
+async function dbDelSpec(id){
+  const{error}=await sb.from('spec_items').delete().eq('id',id);
+  if(error)throw error;
+}
+
+// ── SPEC PAGINATION ─────────────────────────────────────────────
+// FIX2: server-side load more — fetch next page from DB
+// ADD: loading lock per project to prevent race condition
+const _specLoading={};
+async function loadMoreSpecItems(pid){
+  // MODIFY: check lock before proceeding
+  if(_specLoading[pid])return; // already loading, skip duplicate calls
+  const pg=S.specPages[pid]||{offset:0,hasMore:true};
+  if(!pg.hasMore)return;
+  _specLoading[pid]=true; // set lock
+  const lmbtn=document.getElementById('spec-lm-'+pid);
+  if(lmbtn){lmbtn.textContent='⏳ Đang tải...';lmbtn.disabled=true;}
+  try{
+    const{data,error}=await sb.from('spec_items')
+      .select('*')
+      .eq('project_id',pid)
+      .order('created_at',{ascending:true})
+      .range(pg.offset, pg.offset+19);
+    if(error)throw error;
+    const newItems=(data||[]).map(mapSpec);
+    const existing=new Set(S.specItems.map(s=>s.id));
+    const fresh=newItems.filter(s=>!existing.has(s.id));
+    S.specItems.push(...fresh);
+    S.specPages[pid]={offset:pg.offset+fresh.length,hasMore:data.length>=20};
+    if(S.cpid===pid)renderDet(pid);
+  }catch(e){
+    toast('❌ Tải thêm thất bại: '+e.message);
+    if(lmbtn){lmbtn.textContent='Tải thêm (thử lại)';lmbtn.disabled=false;}
+  }finally{
+    delete _specLoading[pid]; // always release lock
+  }
+}
+
+// ── AI PLACEHOLDER ────────────────────────────────────────────
+// Sẽ implement sau — chỉ để hook sẵn
+function askAI(context){
+  console.log('[AI] askAI called with context:',context);
+  toast('🤖 AI feature chưa implement — coming soon!');
 }
 
 // ── Boot ─────────────────────────────────────────────────────────
 async function initSupabase(){
+  // MODIFY THIS: call seedIfEmpty before loadAll
+  await seedIfEmpty(); // no-op if DB already has data
   const ok=await loadAll();
   if(ok){
     renderDash();startRealtime();
