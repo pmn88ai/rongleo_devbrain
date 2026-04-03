@@ -1262,7 +1262,7 @@ async function seedIfEmpty(){
 // SUPABASE LAYER — uses window.supabase (UMD, no import needed)
 // ═══════════════════════════════════════════════════════════════
 const SB_URL='https://tgsjsfplsolgbthvkcjk.supabase.co'
-const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRnc2pzZnBsc29sZ2J0aHZrY2prIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ1ODY3OTYsImV4cCI6MjA5MDE2Mjc5Nn0.qFnnSPJ8ZjM1ymB3Ce-ixljuVZ7TmadmOOhMpbyE_Ho'
+const SB_KEY='sb_publishable_A9Q1nhfMsmN3A2GIrISQ4w_IaRgmyph'
 const sb=window.supabase.createClient(SB_URL,SB_KEY)
 
 // Field mapping: DB snake_case → JS camelCase
@@ -1647,7 +1647,7 @@ function rSpecItems(specs,pid){
       </div>
     </div>`;
   }).join('')
-  + (hasMore?`<button class="lmbtn" onclick="S.specPages['${pid}']=(S.specPages['${pid}']||1)+1;document.getElementById('spec-list-${pid}').innerHTML=rSpecItems(S.specItems.filter(s=>s.projectId==='${pid}'),'${pid}')">Xem thêm (${specs.length-shown.length} còn lại)</button>`:''); // FIX2
+  + (hasMore?`<button id="spec-lm-${pid}" class="lmbtn" onclick="loadMoreSpecItems('${pid}')">Tải thêm ↓</button>`:'');
 }
 
 // Open spec modal (add or edit)
@@ -1777,10 +1777,24 @@ async function saveSpecItem(){
   }else{
     const tid=uid(),now=Date.now();
     const ns={id:tid,...data,createdAt:now};
-    S.specItems.push(ns);touchActivity(pid);if(S.cpid===pid)renderDet(pid); // FIX1
-    try{const created=await dbSaveSpec(null,data,pid);rtSkipAdd(created.id);const i=S.specItems.findIndex(x=>x.id===tid);if(i!==-1)S.specItems[i].id=created.id;}
-    catch(e){S.specItems=S.specItems.filter(x=>x.id!==tid);if(S.cpid===pid)renderDet(pid);toast('❌ Lưu thất bại, thử lại');}
-    toast('📐 Spec item đã thêm!');
+    S.specItems.push(ns);touchActivity(pid);if(S.cpid===pid)renderDet(pid);
+    setSaveState('saving');
+    // BUG1 FIX: toast inside try so it only fires on success
+    try{
+      const created=await dbSaveSpec(null,data,pid);
+      if(!created)throw new Error('dbSaveSpec returned null — insert failed silently');
+      rtSkipAdd(created.id);
+      const i=S.specItems.findIndex(x=>x.id===tid);
+      if(i!==-1)S.specItems[i].id=created.id;
+      setSaveState('saved');
+      toast('📐 Spec item đã thêm!');
+    }catch(e){
+      console.error('[SPEC INSERT FAIL]',e);
+      setSaveState('error');
+      S.specItems=S.specItems.filter(x=>x.id!==tid);
+      if(S.cpid===pid)renderDet(pid);
+      toast('❌ Lưu spec thất bại: '+e.message);
+    }
   }
 }
 
